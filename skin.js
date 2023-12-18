@@ -1,4 +1,5 @@
 (function () {
+    console.log('tm script loaded')
     'use strict';
 
     function isElementVisible(element) {
