@@ -354,11 +354,14 @@
                     }
 
                     else {
-                        _generated_data.style.display = '';
+                       _generated_data.style.display = '';
                         _generated_tab.style.display = '';
                         _unlabeled.style.display = 'none'
                         _labeled.style.display = 'none'
                         _generated_data.click();
+                        
+                        $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.genericPredicatePill.explorePredicateImplicitIntentMatch__pill > div.genericPredicatePill__closeCTA").click();
+                        
                         //if(isElementVisible(_stash_tab)){
                         //  _stash.click();
                         //}
@@ -382,11 +385,18 @@
                             _generated_tab.style.display = '';
 
                         }
+
                         else {
+
                             // _data_tab.click();
                             // _generated_data.click();
                         }
 
+                        if(!promptPinnedElement){
+                            try{
+                                $('#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.buttonGroup.nlgFilter.nlgFilter--active > div > button').click();
+                            }catch(exception){}
+                        }
 
                     }
 
