@@ -1,0 +1,27 @@
+#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div.exploreV2__headerWrapper{
+    display:none
+}
+
+#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div.exploreV2__headerWrapper{
+    display:none
+}
+
+#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > header > div.page__subheader > div > div.collapsibleMenu > div:nth-child(2){
+    display:none;
+}
+
+#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > header > div.page__subheader > div > div.stack.stack--vertical.stack--fullHeight.stack--gapNone{
+    display:none;
+}
+
+#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > header > div.page__subheader > div > div.subMenu__importExport{
+    justify-content:flex-end;
+}
+
+#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > header > div.page__subheader > div > div.collapsibleMenu > div:nth-child(1){
+    margin-left:20px;
+}
+
+/* #shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapNone.fluidLayout.fluidLayout--smoothTransitions > div:nth-child(2) > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.stash__body{
+    display:none;
+} */
