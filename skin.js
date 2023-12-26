@@ -272,7 +272,9 @@
             buttonElement.style.display = "none"
 
             var filtersParent = document.querySelector(filters_parent);
-            filtersParent.appendChild(buttonElement);
+            try{
+                filtersParent.appendChild(buttonElement);
+            }catch(exception){}
 
             var _data_tab = document.querySelector(data_tab);
             var _generated_tab = document.querySelector(generated_tab);
@@ -316,6 +318,18 @@
                             elementToDelete.parentNode.removeChild(elementToDelete);
                         }
                     } catch (exception) { }
+
+                    try{
+                        $(".hierarchicalIntent").each(function(index){
+                            $(this).click(function(){
+                                $(this).off('click');
+                                $(".showIntentDataCTA", this).click();
+                                if (dataSelected.textContent !== 'Data') {
+                                    $(".pinIntentCTA", this).click();
+                                }
+                            });
+                        });
+                    }catch(exception){}   
 
                     if (dataSelected.textContent === 'Data') {
 
@@ -382,7 +396,8 @@
 
             ruleEngineLogic()
 
-            document.querySelector("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(1) > div.fluidLayout__content > div > div.ds-tabs.ds-tabs--horizontal > button:nth-child(2)").textContent = "Data";
+            //document.querySelector("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(1) > div.fluidLayout__content > div > div.ds-tabs.ds-tabs--horizontal > button:nth-child(2)").textContent = "Data";
+            $("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(1) > div.fluidLayout__content > div > div.ds-tabs.ds-tabs--horizontal > button:nth-child(2)").get(0).lastChild.nodeValue = "Data";
 
         }
     }, 500); // Poll every 500 milliseconds
