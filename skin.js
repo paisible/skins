@@ -22,9 +22,9 @@
 
         var prompt_pinned = '#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(1) > div.fluidLayout__content > div > div.promptPanel > div > div.promptPanel__return > h2'
         var data_selected = '#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(1) > div.fluidLayout__content > div > div.ds-tabs.ds-tabs--horizontal > button.ds-tab.ds-tab--isActive.ds-tab--hasIcon.ds-tab--horizontal'
-        var labeled_data = '#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > button:nth-child(3)'
-        var unlabeled_data = '#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > button:nth-child(4)'
-        var generated_data = '#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > button:nth-child(2)'
+        var labeled_data = '#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > button:nth-child(2)'
+        var unlabeled_data = '#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > button:nth-child(3)'
+        var generated_data = '#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > button:nth-child(1)'
         var stash = '#fluid-layout-overlay-portal-0 > div > div.ds-tabs.ds-tabs--horizontal > button:nth-child(4)'
         var data_tab = '#fluid-layout-overlay-portal-0 > div > div.ds-tabs.ds-tabs--horizontal > button:nth-child(3)'
         var generated_tab = '#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.ds-tabs.ds-tabs--hideBottomLine.ds-tabs--horizontal > button:nth-child(2)'
@@ -71,12 +71,15 @@
             container2.style.marginTop = "0px";
 
             var buttonData = document.createElement('button');
-            buttonData.className = 'DS-button DS-button--small';
+            buttonData.className = 'DS-button DS-button--small newButton';
             buttonData.style.position = "relative";
             buttonData.style.height = "30px";
             buttonData.style.top = "5px";
-            buttonData.style.marginRight = "20px";
             buttonData.style.height = "30px";
+            buttonData.style.borderColor = "#eeb9de";
+            buttonData.style.color = "#000";
+            buttonData.style.backgroundColor = "#f4d6e9";
+
 
             var divTextData = document.createElement('div');
             divTextData.className = 'genericPredicatePill__text__visible';
@@ -87,17 +90,19 @@
             divTextData.appendChild(spanData);
             buttonData.appendChild(divTextData);
 
-            var parentElementData = document.querySelector('#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.ds-tabs.ds-tabs--hideBottomLine.ds-tabs--horizontal');
-            parentElementData.insertBefore(buttonData, parentElementData.firstChild);
-            // $('#fluid-layout-overlay-portal-0 > div > div.ds-tabs.ds-tabs--horizontal').append(buttonData);
+            //var parentElementData = document.querySelector('#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.ds-tabs.ds-tabs--hideBottomLine.ds-tabs--horizontal');
+            //parentElementData.insertBefore(buttonData, parentElementData.firstChild);
+            $('#fluid-layout-overlay-portal-0 > div > div.ds-tabs.ds-tabs--horizontal').append(buttonData);
 
             var buttonStash = document.createElement('button');
             buttonStash.className = 'DS-button DS-button--small';
             buttonStash.style.position = "relative";
             buttonStash.style.height = "30px";
             buttonStash.style.top = "5px";
-            buttonStash.style.marginRight = "20px";
             buttonStash.style.height = "30px";
+            buttonStash.style.borderColor = "#eee";
+            buttonStash.style.color = "#3f5597";
+            // buttonStash.style.bakgroundColor = "#f4d6e9";
 
             var divTextStash = document.createElement('div');
             divTextStash.className = 'genericPredicatePill__text__visible';
@@ -108,15 +113,17 @@
             divTextStash.appendChild(spanStash);
             buttonStash.appendChild(divTextStash);
 
-            var parentElementStash = document.querySelector('#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal');
-            parentElementStash.insertBefore(buttonStash, parentElementStash.firstChild);
-            //$('#fluid-layout-overlay-portal-0 > div > div.ds-tabs.ds-tabs--horizontal').append(buttonStash);
+            //var parentElementStash = document.querySelector('#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal');
+            //parentElementStash.insertBefore(buttonStash, parentElementStash.firstChild);
+            $('#fluid-layout-overlay-portal-0 > div > div.ds-tabs.ds-tabs--horizontal').append(buttonStash);
+            
             //('#fluid-layout-overlay-portal-0 > div > div.ds-tabs.ds-tabs--horizontal').append(buttonStash);
 
             $("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > header > div.page__subheader > div > div > div.stack.stack--horizontal.stack--fullWidth.stack--gapLarge.stack--horizontalPadSmall").hide();
-            $("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > header > div.page__subheader > div > div > div.stack.stack--horizontal.stack--fullHeight.stack--gapSmall.stack--verticalPadSmall").hide();
+            $("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > header > div.page__subheader > div > div > div.stack.stack--horizontal.stack--fullHeight.stack--gapSmall.stack--verticalPadSmall").css({"bottom":"3px"});
+            
             // $("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > header").hide();
-            $("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(1)").css({"margin-top":"-46px"})
+            // $("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(1)").css({"margin-top":"-46px"})
             $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.stash__body > div.stack.stack--horizontal.stack--gapSmall.stack--verticalPadSmall.stashCTA").css({"margin-left":"10px"});
             $("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > header > div.page__subheader > div > div > div:nth-child(3)").css({"position":"fixed", "top":"10px", "right": "5px"})
 
@@ -126,18 +133,26 @@
             document.querySelector('#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.stash__body > div.stack.stack--horizontal.stack--gapSmall.stack--verticalPadSmall.stashCTA').innerHTML += '<button class="DS-button DS-button--secondary DS-button--x-small">Apply to new prompt</button>';
             document.querySelector('#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.stash__body > div.stack.stack--horizontal.stack--gapSmall.stack--verticalPadSmall.stashCTA').innerHTML += '<button class="DS-button DS-button--secondary DS-button--x-small">Save to new label</button>';
             */
+           $(buttonStash).css({"position":"absolute", "right":"2px", "top":"3px"});
+           $(buttonData).css({"position":"absolute", "right":"2px", "top":"3px"});
            
             // set the click events
             $(buttonData).click(function () {
                 document.querySelector('#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top').style.display = 'none';
                 document.querySelector('#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__filterWrapper').style.display = '';
                 document.querySelector('#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__mainListWrapper').style.display = '';
+                $(buttonData).hide();
+                $(buttonStash).show();
+                $(buttonStash).addClass('DS-button--secondary')
             });
 
             $(buttonStash).click(function () {
                 document.querySelector('#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__filterWrapper').style.display = 'none';
                 document.querySelector('#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__mainListWrapper').style.display = 'none';
                 document.querySelector('#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top').style.display = '';
+                $(buttonStash).hide();
+                $(buttonData).show();
+                $(buttonStash).removeClass('DS-button--secondary')
             });
 
 
@@ -162,6 +177,7 @@
             // Update the button text
             //const _button = document.querySelector("#fluid-layout-overlay-portal-0 > div > div.ds-tabs.ds-tabs--horizontal > button:nth-child(4)");
             $(buttonStash).text(`Stash (${num})`);
+            $(buttonData).text(`Stash (${num})`);
             //_button.textContent = `Stash (${num})`;
             
             // _button.classList.add("DS-button--secondary");
@@ -178,15 +194,16 @@
                 // Do something when the innerHTML changes
                 console.log("InnerHTML has changed:", targetElement.innerHTML);
                 if(`${targetElement.innerHTML}` === "0"){
-                    $(buttonStash).addClass('DS-button--secondary')
+                    //$(buttonStash).addClass('DS-button--secondary')
                     //_button.classList.add("DS-button--secondary");
                 }
                 else{
-                    $(buttonStash).removeClass('DS-button--secondary');
+                    //$(buttonStash).removeClass('DS-button--secondary');
                    // _button.classList.remove("DS-button--secondary");
                 }
                 $(buttonStash).text(`Stash (${targetElement.innerHTML})`)
-                _button.textContent = `Stash (${targetElement.innerHTML})`;
+                $(buttonData).text(`Stash (${targetElement.innerHTML})`)
+                //_button.textContent = `Stash (${targetElement.innerHTML})`;
             };
 
             const handleSimilarityChange = () => {
@@ -280,7 +297,6 @@
                     var _unlabeled = document.querySelector(unlabeled_data);
                     var _labeled = document.querySelector(labeled_data);
                     var _stash = document.querySelector(stash)
-                    var _stash_tab = document.querySelector(stash_tab);
                     var _run_spinner = document.querySelector(run_spinner)
 
                     try {
@@ -319,7 +335,7 @@
                             _stash.click();
                         }*/
 
-                        _data_tab.textContent = '> Sources'
+                        // _data_tab.textContent = 'Sources'
 
                     }
 
@@ -332,7 +348,7 @@
                         //if(isElementVisible(_stash_tab)){
                         //  _stash.click();
                         //}
-                        _data_tab.textContent = '> Generated'
+                        // _data_tab.textContent = 'Generated'
 
 
                         
