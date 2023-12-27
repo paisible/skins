@@ -338,7 +338,7 @@
                         _labeled.style.display = ''
 
                         // _data_tab.click();
-                        // _unlabeled.click();
+                        _unlabeled.click();
 
                         /*
                         if(!isElementVisible(_stash_tab)){

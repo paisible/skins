@@ -1,3 +1,11 @@
 #fluid-layout-overlay-portal-0 > div > div.intentPanel > div > button{
     display:none
 }
+
+.ds-tabs--horizontal{
+    height:43px;
+}
+
+/* .pill--light{
+    background-color:rgb(244, 214, 233);
+} */
