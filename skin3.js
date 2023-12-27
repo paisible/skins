@@ -34,23 +34,10 @@
         var similarity_to_stash = '#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__filterWrapper > div > div.predicateWrapper__container > div > button'
         var filters_parent = '#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills'
 
-
         var targetElement = document.querySelector("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.ds-tabs.ds-tabs--hideBottomLine.ds-tabs--horizontal")
         
         if (targetElement) {
             clearInterval(pollInterval);
-
-            // try{
-            //     $(".hierarchicalIntent").each(function(index){
-            //         $(this).click(function(){
-            //             $(this).off('click');
-            //             $(".showIntentDataCTA", this).click();
-            //             if (dataSelected.textContent !== 'Labels') {
-            //                 $(".pinIntentCTA", this).click();
-            //             }
-            //         });
-            //     });
-            // }catch(exception){}   
 
             document.clicks = 0;            
             $('body').on('click', function(event){
@@ -162,7 +149,6 @@
             // Function to handle changes in innerHTML
             const handleInnerHTMLChange = () => {
                 // Do something when the innerHTML changes
-                console.log("InnerHTML has changed:", targetElement.innerHTML);
                 if(`${targetElement.innerHTML}` === "0"){
                 }
                 else{
@@ -188,9 +174,16 @@
                 }
             };
 
+            const handleLeftPanelChange = () => {
+                console.log("changed");
+                // Do something when the innerHTML changes
+                setTimeout(function(){ruleEngineLogic();}, 100);
+            };
+
             // Create a MutationObserver instance
             const observer = new MutationObserver(handleInnerHTMLChange);
             const observer2 = new MutationObserver(handleSimilarityChange);
+            const observer3 = new MutationObserver(handleLeftPanelChange);
 
             // Configure the observer to monitor innerHTML changes
             const observerConfig = {
@@ -203,8 +196,10 @@
             // Start observing the target element for changes
             observer.observe(targetElement, observerConfig);
             
-            var _realSimilarity = document.querySelector(similarity_to_stash);
+            var leftPanel = $("#fluid-layout-overlay-portal-0 > div");
+            observer3.observe(leftPanel[0], observerConfig);
 
+            var _realSimilarity = document.querySelector(similarity_to_stash);
             var similarityParent = document.querySelector('#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__filterWrapper > div > div.predicateWrapper__container > div');
             observer2.observe(similarityParent, observerConfig);
             
@@ -251,7 +246,7 @@
             //     // Call the rule engine when a click event is triggered within the main menu or its child elements
             //     setTimeout(function(){ruleEngineLogic();}, 100)
             // });
-
+            
             var dataFilters = $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters");
             var dataPredicates = $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.predicateWrapper__container");
             var dataList = $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__mainListWrapper");
@@ -317,10 +312,9 @@
                     var _stash = document.querySelector(stash)
                     var _run_spinner = document.querySelector(run_spinner)
 
-
                     
-                    $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top").hide();
-                    $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top").insertBefore("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__mainListWrapper");
+                    //$("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top").hide();
+                    //$("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top").insertBefore("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__mainListWrapper");
 
 
                     try {
@@ -339,6 +333,31 @@
                             elementToDelete.parentNode.removeChild(elementToDelete);
                         }
                     } catch (exception) { }
+
+
+                    try{
+                        $(".hierarchicalIntent").each(function(index){
+                            // $(this).unbind("click");
+                            $(this).click(function(){
+                                $(this).off('click');
+                               
+                                if (dataSelected.textContent !== 'Labels') {
+                                    $(".pinIntentCTA", this).click();
+                                    if($(".stash:visible").length == 0){
+                                        buttonStash.click();
+                                        // $(".utteranceContainer__filterWrapper .ds-tab--isActive").css({
+                                        //     "color":"#3f5597"
+                                        // });
+                                    }
+                                }
+                                else{
+                                    $(".showIntentDataCTA", this).click();
+                                }
+                            });
+                        });
+                    }catch(exception){}
+
+
 
                     if (dataSelected.textContent === 'Labels') {
 
