@@ -104,6 +104,9 @@
             parentElementStash.insertBefore(buttonStash, parentElementStash.firstChild);
             //$(parentElementStash).append(buttonStash);
         
+            $(".ds-tabs--horizontal").css({
+                "height":"43px"
+            });
             
             $("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > header > div.page__subheader > div > div > div.stack.stack--horizontal.stack--fullWidth.stack--gapLarge.stack--horizontalPadSmall").hide();
             $("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > header > div.page__subheader > div > div > div.stack.stack--horizontal.stack--fullHeight.stack--gapSmall.stack--verticalPadSmall").css({"bottom":"3px"});
