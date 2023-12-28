@@ -55,6 +55,11 @@
                 lastSeenAt.y = event.clientY;
             });
 
+            document.stats = function(){
+                console.log(document.clicks);
+                console.log(document.totalDistance);
+            };
+
             $("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > header > div.page__subheader > div").css({
                 "background-color":"#fff"
             });
@@ -215,12 +220,6 @@
                status = "stash";
                $(buttonStash).removeClass('DS-button--secondary');
 
-            //    $(buttonStash).css({
-            //     "border": "1px solid #eeb9de",
-            //     "background":"#f4d6e9",
-            //     "color": "#000",
-            //     "box-shadow":"none"
-            //    })
             }
 
             function showData(){
@@ -232,12 +231,6 @@
                 $(stashContainer).insertBefore(dataContainer);
                 status = "data";
                 
-                //$(buttonStash).addClass('DS-button--secondary');
-                // $(buttonStash).css({
-                //     "border": "1px solid #bac0de",
-                //     "background":"#fff",
-                //     "color": "#3f5597"
-                // })
             }
 
             // $(".stash .ds-tab").click(function(){
