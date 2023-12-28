@@ -1,3 +1,7 @@
+#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.stash__body > div.stash__list{
+    height:450px;
+}
+
 #fluid-layout-overlay-portal-0 > div > div.intentPanel > div > button{
     display:none
 }

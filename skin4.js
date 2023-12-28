@@ -20,10 +20,10 @@
 
         var prompt_pinned = '#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(1) > div.fluidLayout__content > div > div.promptPanel > div > div.promptPanel__return > h2'
         var data_selected = '#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(1) > div.fluidLayout__content > div > div.ds-tabs.ds-tabs--horizontal > button.ds-tab.ds-tab--isActive.ds-tab--hasIcon.ds-tab--horizontal'
-        var labeled_data = '#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > button:nth-child(2)'
-        var unlabeled_data = '#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > button:nth-child(3)'
+        var labeled_data = '#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > button:nth-child(3)'
+        var unlabeled_data = '#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > button:nth-child(4)'
         var generated_data = '#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > button:nth-child(2)'
-        var stash = '#fluid-layout-overlay-portal-0 > div > div.ds-tabs.ds-tabs--horizontal > button:nth-child(4)'
+        var stash = '#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > button.DS-button.DS-button--small'
         var data_tab = '#fluid-layout-overlay-portal-0 > div > div.ds-tabs.ds-tabs--horizontal > button:nth-child(3)'
         var generated_tab = '#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.ds-tabs.ds-tabs--hideBottomLine.ds-tabs--horizontal > button:nth-child(2)'
         var stash_tab = '#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.ds-tabs.ds-tabs--hideBottomLine.ds-tabs--horizontal > button.ds-tab.ds-tab--isActive.ds-tab--horizontal'
@@ -103,8 +103,6 @@
             $("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > header > div.page__subheader > div > div > div.stack.stack--horizontal.stack--fullWidth.stack--gapLarge.stack--horizontalPadSmall").hide();
             $("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > header > div.page__subheader > div > div > div.stack.stack--horizontal.stack--fullHeight.stack--gapSmall.stack--verticalPadSmall").css({"bottom":"3px"});
             
-            // $("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > header").hide();
-            // $("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(1)").css({"margin-top":"-46px"})
             $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.stash__body > div.stack.stack--horizontal.stack--gapSmall.stack--verticalPadSmall.stashCTA").css({"margin-left":"15px"});
             $("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > header > div.page__subheader > div > div > div:nth-child(3)").css({"position":"fixed", "top":"10px", "right": "5px"})
 
@@ -136,8 +134,6 @@
 
             // click on the stash expand button
             document.querySelector("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.stash__body > div.stash__toggleButton > button").click();
-            document.querySelector("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.stash__body > div.stash__list").style.height = "500px";
-
 
             // Listen for changes in the raw value
             const valueElement = document.querySelector("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.ds-tabs.ds-tabs--hideBottomLine.ds-tabs--horizontal > button.ds-tab.ds-tab--isActive.ds-tab--horizontal > span");
@@ -149,24 +145,6 @@
             $(buttonStash).text(`Stash (${num})`);
 
 
-            // Get the target element
-            const targetElement = document.querySelector("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.ds-tabs.ds-tabs--hideBottomLine.ds-tabs--horizontal > button.ds-tab.ds-tab--isActive.ds-tab--horizontal > span");
-
-            // Function to handle changes in innerHTML
-            const handleInnerHTMLChange = () => {
-                // Do something when the innerHTML changes
-                if(`${targetElement.innerHTML}` === "0"){
-                }
-                else{
-                }
-                try{
-                    $(buttonStash).text(`Stash (${targetElement.innerHTML})`)
-                    $(buttonData).text(`Stash (${targetElement.innerHTML})`)
-                }catch(exception){}
-            };
-
-
-
             const handleLeftPanelChange = () => {
                 console.log("changed");
                 // Do something when the innerHTML changes
@@ -174,7 +152,6 @@
             };
 
             // Create a MutationObserver instance
-            const observer = new MutationObserver(handleInnerHTMLChange);
             const observer3 = new MutationObserver(handleLeftPanelChange);
 
             // Configure the observer to monitor innerHTML changes
@@ -182,11 +159,11 @@
                 childList: true,
                 subtree: true,
                 characterData: true,
-                characterDataOldValue: true
+                characterDataOldValue: true,
+                attributes: true,
+                attributeFilter: ["style"]
             };
 
-            // Start observing the target element for changes
-            observer.observe(targetElement, observerConfig);
             
             var leftPanel = $("#fluid-layout-overlay-portal-0 > div");
             observer3.observe(leftPanel[0], observerConfig);
@@ -255,22 +232,45 @@
 
             showData();
 
+
+            var stashListener = function(){
+                // Get the target element
+                var stashContainer = $('.stash');
+                
+                // Function to handle changes in innerHTML
+                var handleInnerHTMLChange = () => {
+                    var targetElement = $("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.ds-tabs.ds-tabs--hideBottomLine.ds-tabs--horizontal > button.ds-tab.ds-tab--isActive.ds-tab--horizontal > span");
+                    // Do something when the innerHTML changes
+                    if(`${targetElement[0].innerHTML}` === "0"){
+                    }
+                    else{
+                    }
+                    try{
+                        $(buttonStash).text(`Stash (${targetElement[0].innerHTML})`)
+                        $(buttonData).text(`Stash (${targetElement[0].innerHTML})`)
+                    }catch(exception){}
+                };
+                var observer = new MutationObserver(handleInnerHTMLChange);
+                // Start observing the target element for changes
+                observer.observe(stashContainer[0], observerConfig);
+            }
+            stashListener();
+
+            var activatedTab = null;
+
             function ruleEngineLogic() {
 
+                var activeTab = activatedTab;
+                activatedTab = $('.utteranceContainer__filterWrapper .ds-tab--isActive');
+                
                 setTimeout(function () {
 
                     const promptPinnedElement = document.querySelector(prompt_pinned);
 
-                    var dataSelected = document.querySelector(data_selected);
-                    var _generated_data = document.querySelector(generated_data)
-                    var _unlabeled = document.querySelector(unlabeled_data);
-                    var _labeled = document.querySelector(labeled_data);
-                    var _stash = document.querySelector(stash)
-                    var _run_spinner = document.querySelector(run_spinner)
-
-                    
-                    //$("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top").hide();
-                    //$("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top").insertBefore("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__mainListWrapper");
+                    var dataSelected = $(data_selected);
+                    var _generated_data = $(generated_data)
+                    var _stash = $(stash)
+                    var _run_spinner = $(run_spinner)
 
 
                     try {
@@ -297,7 +297,7 @@
                             $(this).click(function(){
                                 $(this).off('click');
                                
-                                if (dataSelected.textContent !== 'Labels') {
+                                if (dataSelected.textContent !== 'Data') {
                                     $(".pinIntentCTA", this).click();
                                         buttonStash.click();
 
@@ -310,20 +310,27 @@
                     }catch(exception){}
 
 
-
-                    if (dataSelected.textContent === 'Labels') {
-
+                    if (dataSelected.text() === 'Data') {
+                        $(generated_data).hide();
+                        $(labeled_data).show();
+                        $(unlabeled_data).show();
+                        
+                        if(activeTab){
+                            activeTab.click();
+                        }
                     }
 
                     else {
-
+                        $(generated_data).show();
+                        $(labeled_data).hide();
+                        $(unlabeled_data).hide();
                         
                         $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.genericPredicatePill.explorePredicateImplicitIntentMatch__pill > div.genericPredicatePill__closeCTA").click();
                         
-                        if (promptPinnedElement && !_run_spinner) {
+                        if (promptPinnedElement && _run_spinner.length == 0) {
 
-                            if (_stash) {
-                                // _stash.click();
+                            if (_stash && !_stash.hasClass('activated')) {
+                                _stash.click();
                             }
 
                         }
@@ -347,7 +354,7 @@
             ruleEngineLogic()
 
             //document.querySelector("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(1) > div.fluidLayout__content > div > div.ds-tabs.ds-tabs--horizontal > button:nth-child(2)").textContent = "Data";
-            $("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(1) > div.fluidLayout__content > div > div.ds-tabs.ds-tabs--horizontal > button:nth-child(2)").get(0).lastChild.nodeValue = "Labels";
+            $("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(1) > div.fluidLayout__content > div > div.ds-tabs.ds-tabs--horizontal > button:nth-child(2)").get(0).lastChild.nodeValue = "Data";
 
         }
     }, 500); // Poll every 500 milliseconds
