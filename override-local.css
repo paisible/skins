@@ -6,6 +6,12 @@
     height:43px;
 }
 
+.DS-button.activated{
+    background:#f4d6e9;
+    border-color:#eeb9de;
+    color:#000;
+}
+
 /* .utteranceContainer__filterWrapper .ds-tab.ds-tab--horizontal, .objectColumnContainer > .ds-tabs > .ds-tab.ds-tab--horizontal{
     border:none;
     box-shadow:none;
@@ -14,6 +20,15 @@
 .utteranceContainer__filterWrapper .ds-tab.ds-tab--horizontal.ds-tab--isActive, .objectColumnContainer > .ds-tabs > .ds-tab.ds-tab--horizontal.ds-tab--isActive{
     border-bottom:5px solid blue;
 } */
+
+.stash .ds-tab.ds-tab--horizontal{
+    border:none;
+    box-shadow:none;
+}
+
+.stash .ds-tab.ds-tab--horizontal.ds-tab--isActive{
+    border-bottom:3px solid blue;
+}
 
 
 /* .pill--light{

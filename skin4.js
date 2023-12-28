@@ -2,8 +2,6 @@
     console.log('tm script loaded')
     'use strict';
 
-
-
     function isElementVisible(element) {
         const style = window.getComputedStyle(element);
         return style.display !== 'none' && style.visibility !== 'hidden';
@@ -77,12 +75,13 @@
             document.head.appendChild(styleElement);
 
             var buttonStash = document.createElement('button');
-            //buttonStash.className = 'DS-button DS-button--small';
-            buttonStash.className = 'ds-tab ds-tab--horizontal stash'
-            // buttonStash.style.position = "relative";
-            // buttonStash.style.height = "30px";
-            // buttonStash.style.top = "8px";
-            // buttonStash.style.height = "30px";
+            buttonStash.className = 'DS-button DS-button--small';
+            //buttonStash.className = 'ds-tab ds-tab--horizontal stash'
+            buttonStash.style.position = "relative";
+            buttonStash.style.height = "30px";
+            buttonStash.style.top = "8px";
+            buttonStash.style.height = "30px";
+            buttonStash.style.marginRight = "10px";
 
             var divTextStash = document.createElement('div');
             divTextStash.className = 'genericPredicatePill__text__visible';
@@ -210,6 +209,8 @@
             var stashBody = $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.stash__body");
             var stashContainer = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top";
 
+            var selectedTab = null;
+
             function showStash(){
                dataFilters.hide();
                dataPredicates.hide();
@@ -219,6 +220,9 @@
                $(dataContainer).insertBefore(stashContainer);
                status = "stash";
                $(buttonStash).removeClass('DS-button--secondary');
+               $(buttonStash).addClass('activated');
+               selectedTab = $('.utteranceContainer__filterWrapper .ds-tab--isActive');
+               $(selectedTab).removeClass('ds-tab--isActive');
 
             }
 
@@ -230,12 +234,13 @@
                 stashBody.hide();
                 $(stashContainer).insertBefore(dataContainer);
                 status = "data";
+                $(buttonStash).removeClass('activated');
+                try{
+                    $(selectedTab).addClass('ds-tab--isActive');
+                }catch(exception){}
                 
             }
 
-            // $(".stash .ds-tab").click(function(){
-            //     showStash();
-            // });
             
             $(".utteranceContainer__filterWrapper .ds-tab").click(function(){
                 if($(this).hasClass('stash')){
