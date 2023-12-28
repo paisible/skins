@@ -24,7 +24,7 @@
         var data_selected = '#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(1) > div.fluidLayout__content > div > div.ds-tabs.ds-tabs--horizontal > button.ds-tab.ds-tab--isActive.ds-tab--hasIcon.ds-tab--horizontal'
         var labeled_data = '#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > button:nth-child(2)'
         var unlabeled_data = '#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > button:nth-child(3)'
-        var generated_data = '#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > button:nth-child(1)'
+        var generated_data = '#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > button:nth-child(2)'
         var stash = '#fluid-layout-overlay-portal-0 > div > div.ds-tabs.ds-tabs--horizontal > button:nth-child(4)'
         var data_tab = '#fluid-layout-overlay-portal-0 > div > div.ds-tabs.ds-tabs--horizontal > button:nth-child(3)'
         var generated_tab = '#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.ds-tabs.ds-tabs--hideBottomLine.ds-tabs--horizontal > button:nth-child(2)'
@@ -72,11 +72,12 @@
             document.head.appendChild(styleElement);
 
             var buttonStash = document.createElement('button');
-            buttonStash.className = 'DS-button DS-button--small';
-            buttonStash.style.position = "relative";
-            buttonStash.style.height = "30px";
-            buttonStash.style.top = "8px";
-            buttonStash.style.height = "30px";
+            //buttonStash.className = 'DS-button DS-button--small';
+            buttonStash.className = 'ds-tab ds-tab--horizontal stash'
+            // buttonStash.style.position = "relative";
+            // buttonStash.style.height = "30px";
+            // buttonStash.style.top = "8px";
+            // buttonStash.style.height = "30px";
 
             var divTextStash = document.createElement('div');
             divTextStash.className = 'genericPredicatePill__text__visible';
@@ -109,7 +110,8 @@
             document.querySelector('#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.stash__body > div.stack.stack--horizontal.stack--gapSmall.stack--verticalPadSmall.stashCTA').innerHTML += '<button class="DS-button DS-button--secondary DS-button--x-small">Apply to new prompt</button>';
             document.querySelector('#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.stash__body > div.stack.stack--horizontal.stack--gapSmall.stack--verticalPadSmall.stashCTA').innerHTML += '<button class="DS-button DS-button--secondary DS-button--x-small">Save to new label</button>';
             */
-           $(buttonStash).css({"margin-bottom":"3px", "margin-right":"10px", "margin-left":"5px"});
+
+           // $(buttonStash).css({"margin-bottom":"3px", "margin-right":"10px", "margin-left":"5px"});
           
            var status = "data";
 
@@ -159,20 +161,7 @@
                 }catch(exception){}
             };
 
-            const handleSimilarityChange = () => {
-                // Do something when the innerHTML changes
-                var button = document.querySelector(similarity_to_stash);
-                if(button){
-                    buttonElement.style.display = '';
-                    button.style.display = 'none'
-                    buttonElement.addEventListener('click', function(){
-                        button.click();
-                    });
-                }
-                else{
-                    buttonElement.style.display = 'none';
-                }
-            };
+
 
             const handleLeftPanelChange = () => {
                 console.log("changed");
@@ -182,7 +171,6 @@
 
             // Create a MutationObserver instance
             const observer = new MutationObserver(handleInnerHTMLChange);
-            const observer2 = new MutationObserver(handleSimilarityChange);
             const observer3 = new MutationObserver(handleLeftPanelChange);
 
             // Configure the observer to monitor innerHTML changes
@@ -198,45 +186,6 @@
             
             var leftPanel = $("#fluid-layout-overlay-portal-0 > div");
             observer3.observe(leftPanel[0], observerConfig);
-
-            var _realSimilarity = document.querySelector(similarity_to_stash);
-            var similarityParent = document.querySelector('#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__filterWrapper > div > div.predicateWrapper__container > div');
-            observer2.observe(similarityParent, observerConfig);
-            
-            var similarity_to_stash_button = '<button class="DS-button DS-button--secondary DS-button--small DS-button--hasIcon"><span class="DS-button__icon"><svg viewBox="0 0 16 16"><path d="M6 11H11V6H13C13.5523 6 14 6.44771 14 7V13C14 13.5523 13.5523 14 13 14H7C6.44772 14 6 13.5523 6 13V11Z"></path><path d="M10 5H5L5 10H3C2.44772 10 2 9.55229 2 9L2 3C2 2.44772 2.44771 2 3 2L9 2C9.55228 2 10 2.44772 10 3V5Z"></path><path d="M7 6C6.44772 6 6 6.44772 6 7V9C6 9.55228 6.44771 10 7 10H9C9.55228 10 10 9.55229 10 9L10 7C10 6.44772 9.55228 6 9 6H7Z"></path></svg></span>Stash</button>'
-            const buttonElement = document.createElement('button');
-            
-            buttonElement.className = 'DS-button DS-button--secondary DS-button--small DS-button--hasIcon';
-            
-            const spanElement = document.createElement('span');
-            spanElement.className = 'DS-button__icon';
-            
-            const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-            svgElement.setAttribute('viewBox', '0 0 16 16');
-            
-            const pathElement1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            pathElement1.setAttribute('d', 'M6 11H11V6H13C13.5523 6 14 6.44771 14 7V13C14 13.5523 13.5523 14 13 14H7C6.44772 14 6 13.5523 6 13V11Z');
-            
-            const pathElement2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            pathElement2.setAttribute('d', 'M10 5H5L5 10H3C2.44772 10 2 9.55229 2 9L2 3C2 2.44772 2.44771 2 3 2L9 2C9.55228 2 10 2.44772 10 3V5Z');
-            
-            const pathElement3 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            pathElement3.setAttribute('d', 'M7 6C6.44772 6 6 6.44772 6 7V9C6 9.55228 6.44771 10 7 10H9C9.55228 10 10 9.55229 10 9L10 7C10 6.44772 9.55228 6 9 6H7Z');
-            
-            svgElement.appendChild(pathElement1);
-            svgElement.appendChild(pathElement2);
-            svgElement.appendChild(pathElement3);
-            
-            spanElement.appendChild(svgElement);
-            
-            buttonElement.appendChild(spanElement);
-            buttonElement.appendChild(document.createTextNode('Stash'));
-            buttonElement.style.display = "none"
-
-            var filtersParent = document.querySelector(filters_parent);
-            try{
-                filtersParent.appendChild(buttonElement);
-            }catch(exception){}
 
             var _data_tab = document.querySelector(data_tab);
 
@@ -266,12 +215,12 @@
                status = "stash";
                $(buttonStash).removeClass('DS-button--secondary');
 
-               $(buttonStash).css({
-                "border": "1px solid #eeb9de",
-                "background":"#f4d6e9",
-                "color": "#000",
-                "box-shadow":"none"
-               })
+            //    $(buttonStash).css({
+            //     "border": "1px solid #eeb9de",
+            //     "background":"#f4d6e9",
+            //     "color": "#000",
+            //     "box-shadow":"none"
+            //    })
             }
 
             function showData(){
@@ -282,19 +231,28 @@
                 stashBody.hide();
                 $(stashContainer).insertBefore(dataContainer);
                 status = "data";
-                $(buttonStash).addClass('DS-button--secondary');
-                $(buttonStash).css({
-                    "border": "1px solid #bac0de",
-                    "background":"#fff",
-                    "color": "#3f5597"
-                })
+                
+                //$(buttonStash).addClass('DS-button--secondary');
+                // $(buttonStash).css({
+                //     "border": "1px solid #bac0de",
+                //     "background":"#fff",
+                //     "color": "#3f5597"
+                // })
             }
 
-            $(".stash .ds-tab").click(function(){
-                showStash();
-            });
+            // $(".stash .ds-tab").click(function(){
+            //     showStash();
+            // });
+            
             $(".utteranceContainer__filterWrapper .ds-tab").click(function(){
-                showData();
+                if($(this).hasClass('stash')){
+                    showStash();
+                }
+                else{
+                    showData();
+                }
+                $(".utteranceContainer__filterWrapper .ds-tab").removeClass('ds-tab--isActive');
+                $(this).addClass("ds-tab--isActive");
             });
 
             showData();
@@ -343,12 +301,8 @@
                                
                                 if (dataSelected.textContent !== 'Labels') {
                                     $(".pinIntentCTA", this).click();
-                                    if($(".stash:visible").length == 0){
                                         buttonStash.click();
-                                        // $(".utteranceContainer__filterWrapper .ds-tab--isActive").css({
-                                        //     "color":"#3f5597"
-                                        // });
-                                    }
+
                                 }
                                 else{
                                     $(".showIntentDataCTA", this).click();
