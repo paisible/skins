@@ -28,6 +28,7 @@
     display:none;
 }
 
+
 #shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > header > div.page__subheader > div > div > div.stack.stack--horizontal.stack--fullHeight.stack--gapSmall.stack--verticalPadSmall{
     display:none;
 }
@@ -48,15 +49,32 @@
     display:none !important;
 }
 
-.stash{
+/* .stash{
     margin-top:-10px;
-}
+} */
 
 .stash .ds-tab--isActive .pill{
     background: #eeb9de;
     color:#000;
     border:1px solid #eeb9de;
 }
+
+#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top.depth{
+    position:relative;
+    top:-18px;
+}
+
+#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal.depth{
+    margin-left:25px;
+}
+
+.ds-tab--horizontal{
+    background:#fff;
+}
+
+/* .ds-tab{
+    background:#fff;
+} */
 
 /* #fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall{
     display:none;

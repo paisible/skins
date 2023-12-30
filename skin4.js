@@ -67,6 +67,8 @@
                 "margin-top":"-2px"
             });
 
+            // $(generated_data).append($("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > div > div"));
+
             var css = ".utteranceCell .utteranceCell__inner { white-space: normal }"; // Replace with your desired inline CSS
             var styleElement = document.createElement("style");
             styleElement.innerHTML = css;
@@ -93,8 +95,25 @@
             var parentElementStash = document.querySelector('#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal');
             var buttonStash2 = document.createElement('button');
 
+            // ghost element to save the order -> hack 
             parentElementStash.insertBefore(buttonStash2, parentElementStash.firstChild);
             $(buttonStash2).css({"display":"none"});
+
+            // $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > button.ds-tab.ds-tab--horizontal.ds-tab--isActive").text("Logs")
+            
+            var buttonNewGen = document.createElement('button');
+            buttonNewGen.className = 'DS-button DS-button--small newRun';
+            buttonNewGen.style.position = "relative";
+            buttonNewGen.style.height = "30px";
+            buttonNewGen.style.top = "8px";
+            buttonNewGen.style.height = "30px";
+            buttonNewGen.style.marginRight = "10px";
+            buttonNewGen.style.marginLeft = "10px";
+
+
+            buttonNewGen.textContent = "New Run";
+            $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal").append(buttonNewGen);
+            
             
             var parentElementStash = $("#fluid-layout-overlay-portal-0 > div > div.ds-tabs.ds-tabs--horizontal");
             $(parentElementStash).append(buttonStash);
@@ -216,6 +235,7 @@
 
             function showStash(){
                $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal").hide();
+               
                dataFilters.hide();
                dataPredicates.hide();
                dataList.hide();
@@ -229,10 +249,16 @@
                $(selectedTab).removeClass('ds-tab--isActive');
                $('.utteranceContainer__filterWrapper .ds-tab').addClass('muted');
 
+               $(buttonNewGen).show();
+
+               $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top").addClass('depth');
+               $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal").addClass('depth');
+
             }
 
             function showData(){
                 $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal").show();
+                
                 dataFilters.show();
                 dataPredicates.show();
                 dataList.show();
@@ -245,6 +271,10 @@
                     $(selectedTab).addClass('ds-tab--isActive');
                 }catch(exception){}
                 $('.utteranceContainer__filterWrapper .ds-tab').removeClass('muted');
+                $(buttonNewGen).hide();
+
+                $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top").removeClass('depth');
+                $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal").removeClass('depth');
                 
             }
 
@@ -345,12 +375,14 @@
                         // put the generation run filter first
                         var filterContainer = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills";
                         var genFilter = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.buttonGroup.nlgFilter.nlgFilter--active";
-                        var genFilter2 = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.buttonGroup.nlgFilter";
                         $(filterContainer)[0].insertBefore($(genFilter)[0], $(filterContainer)[0].firstChild);
-                        $(filterContainer)[0].insertBefore($(genFilter2)[0], $(filterContainer)[0].firstChild);
-                       
-
-                    }catch(exception){}    
+                    }catch(exception){}
+                    try{
+                        var filterContainer2 = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > button.ds-tab.ds-tab--isActive.ds-tab--horizontal"
+                        var genFilter2 = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.buttonGroup.nlgFilter";
+                        $(filterContainer2).append($(genFilter2));
+                        $(filterContainer2).contents()[0].textContent=''
+                    }catch(exception){}
                     
                     if (mainTab === 'Data') {
                         var tabContainer = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal";
@@ -361,19 +393,23 @@
                         $(unlabeled_data).show();
                         var dataFilter = $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.genericPredicatePill.explorePredicateImplicitIntentMatch__pill.explorePredicateImplicitIntentMatch__pill--notActive");
                         dataFilter.removeClass("hidden");
+                        $(buttonNewGen).hide();
                 
                     }
 
                     else {
 
                         var tabContainer = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal";
-                        $(tabContainer).hide();
+                        // $(tabContainer).hide();
 
-                        $(generated_data).hide();
+                        //$(generated_data).hide();
+                        $(generated_data).show();
                         $(labeled_data).hide();
                         $(unlabeled_data).hide();
                         var dataFilter = $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.genericPredicatePill.explorePredicateImplicitIntentMatch__pill.explorePredicateImplicitIntentMatch__pill--notActive");
                         dataFilter.addClass("hidden");
+
+                        $(buttonNewGen).show();
                 
                     }
 
