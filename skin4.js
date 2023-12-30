@@ -112,7 +112,7 @@
 
 
             buttonNewGen.textContent = "New Run";
-            $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal").append(buttonNewGen);
+            // $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal").append(buttonNewGen);
             
             
             var parentElementStash = $("#fluid-layout-overlay-portal-0 > div > div.ds-tabs.ds-tabs--horizontal");
@@ -179,6 +179,9 @@
                 "Prompts" : $(generated_data)
             }
 
+            /* 
+                listen for changes to prompt/data tabs
+            */
             $(".objectColumnContainer > .ds-tabs > .ds-tab").click(function(){
                 var tab = $(data_selected).text();
                 var selected = $('.utteranceContainer__filterWrapper .ds-tab--isActive');
@@ -186,6 +189,12 @@
                     selected = buttonStash
                 }
                 lastActivatedTab[tab] = selected;
+
+                var c = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills";
+                var filter = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters.ds-tabs.ds-tabs--horizontal > div.predicateWrapper__pills > div.ds-tab.ds-tab--isActive.ds-tab--horizontal > div"
+                $(c).append($(filter));
+                $("#prompt_tab").remove();
+
             });
 
             const handleLeftPanelChange = () => {
@@ -234,7 +243,7 @@
             var selectedTab = null;
 
             function showStash(){
-               $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal").hide();
+               // $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal").hide();
                
                dataFilters.hide();
                dataPredicates.hide();
@@ -250,9 +259,6 @@
                $('.utteranceContainer__filterWrapper .ds-tab').addClass('muted');
 
                $(buttonNewGen).show();
-
-               $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top").addClass('depth');
-               $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal").addClass('depth');
 
             }
 
@@ -273,9 +279,6 @@
                 $('.utteranceContainer__filterWrapper .ds-tab').removeClass('muted');
                 $(buttonNewGen).hide();
 
-                $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top").removeClass('depth');
-                $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal").removeClass('depth');
-                
             }
 
             
@@ -289,6 +292,12 @@
                 $(".utteranceContainer__filterWrapper .ds-tab").removeClass('ds-tab--isActive');
                 $(this).addClass("ds-tab--isActive");
             });
+
+            // $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.predicateWrapper__container > div").append($("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.controllerPredicatePill"));
+            $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.predicateWrapper__container > div > fieldset:nth-child(4)").hide();
+            $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters.ds-tabs.ds-tabs--horizontal > div.predicateWrapper__pills > div.controllerPredicatePill").hide();
+
+            $(".filters").addClass("ds-tabs ds-tabs--horizontal");
 
             showData();
 
@@ -335,6 +344,9 @@
                     var _stash = $(stash)
                     var _run_spinner = $(run_spinner)
 
+                    $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters.ds-tabs.ds-tabs--horizontal > div.predicateWrapper__pills > div.controllerPredicatePill").hide();
+                    // $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters.ds-tabs.ds-tabs--horizontal > div.predicateWrapper__pills > div.genericPredicatePill").hide();
+
                     try {
                         document.querySelector(run_cta).addEventListener('click', function (event) {
                             // Call the rule engine when a click event is triggered within the main menu or its child elements
@@ -371,18 +383,7 @@
                         });
                     }catch(exception){}
 
-                    try{
-                        // put the generation run filter first
-                        var filterContainer = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills";
-                        var genFilter = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.buttonGroup.nlgFilter.nlgFilter--active";
-                        $(filterContainer)[0].insertBefore($(genFilter)[0], $(filterContainer)[0].firstChild);
-                    }catch(exception){}
-                    try{
-                        var filterContainer2 = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > button.ds-tab.ds-tab--isActive.ds-tab--horizontal"
-                        var genFilter2 = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.buttonGroup.nlgFilter";
-                        $(filterContainer2).append($(genFilter2));
-                        $(filterContainer2).contents()[0].textContent=''
-                    }catch(exception){}
+                    
                     
                     if (mainTab === 'Data') {
                         var tabContainer = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal";
@@ -394,7 +395,14 @@
                         var dataFilter = $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.genericPredicatePill.explorePredicateImplicitIntentMatch__pill.explorePredicateImplicitIntentMatch__pill--notActive");
                         dataFilter.removeClass("hidden");
                         $(buttonNewGen).hide();
+
+                        $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top").addClass('depth');
+                        $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal").addClass('depth');
+
                 
+                        $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.genericPredicatePill.explorePredicateImplicitIntentMatch__pill.explorePredicateImplicitIntentMatch__pill--notActive").wrap("<div id='data_tab' class='ds-tab ds-tab--isActive ds-tab--horizontal'></div>");
+                        $("#data_tab").show();
+                        
                     }
 
                     else {
@@ -410,6 +418,40 @@
                         dataFilter.addClass("hidden");
 
                         $(buttonNewGen).show();
+
+                        $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top").removeClass('depth');
+                        $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal").removeClass('depth');
+
+                        // $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters.ds-tabs.ds-tabs--horizontal > div.predicateWrapper__pills > div.ds-tab.ds-tab--horizontal").hide();
+                        $("#data_tab").hide();
+
+                        setTimeout(function(){
+                            $("div.predicateWrapper__pills > div.buttonGroup.nlgFilter").wrap("<div id='prompt_tab' class='ds-tab ds-tab--isActive ds-tab--horizontal'></div>");
+                        },100);
+
+                        // try{
+                        //     // put the generation run filter first
+                        //     var filterContainer = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills";
+                        //     var genFilter = "div.buttonGroup.nlgFilter";    
+                        //     $(filterContainer)[0].insertBefore($(genFilter)[0], $(filterContainer)[0].firstChild);
+                        
+                        // }catch(exception){
+                        //     console.log(exception);
+                        // }
+
+                        try{
+                            // var filterContainer2 = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > button.ds-tab.ds-tab--isActive.ds-tab--horizontal";
+                            // var genFilter2 = "div.buttonGroup.nlgFilter";
+                            // $(filterContainer2).append($(genFilter2));
+                            // $(filterContainer2).contents()[0].textContent=''
+            
+                            // $(filterContainer2).clone(true).appendTo("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal");
+                            //$(clone).attr('id', '#fluid-layout-overlay-portal-2')
+                            //$().append(clone);
+            
+                        }catch(exception){
+                            console.log(exception);
+                        }
                 
                     }
 

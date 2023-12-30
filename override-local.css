@@ -61,7 +61,7 @@
 
 #fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top.depth{
     position:relative;
-    top:-18px;
+    /*top:-18px;*/
 }
 
 #fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal.depth{
@@ -70,6 +70,27 @@
 
 .ds-tab--horizontal{
     background:#fff;
+}
+
+#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters.ds-tabs.ds-tabs--horizontal > div.predicateWrapper__pills > div{
+    border-bottom-color:#fff;
+    box-shadow:0px 11px 19px -1px #97a3c6;
+}
+
+.genericPredicatePill{
+    display:none;
+}
+
+.genericPredicatePill.explorePredicateImplicitIntentMatch__pill{
+    display:flex;
+}
+
+/* .sortableTable__actionType .ds-checkbox{
+    margin-left:0px;
+} */
+
+.intentPanel .DS-virtualTable td{
+    padding-left:0px;
 }
 
 /* .ds-tab{
