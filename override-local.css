@@ -2,6 +2,10 @@
     height:450px;
 }
 
+#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.stash__body > div.stash__toggleButton{
+    display:none
+}
+
 #fluid-layout-overlay-portal-0 > div > div.intentPanel > div > button{
     display:none
 }
@@ -10,11 +14,53 @@
     height:43px;
 }
 
+.utteranceContainer__filterWrapper .ds-tab.muted{
+    color:#bbb;
+}
+
 .DS-button.activated{
     background:#f4d6e9;
     border-color:#eeb9de;
     color:#000;
 }
+
+.showIntentDataCTA{
+    display:none;
+}
+
+#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > header > div.page__subheader > div > div > div.stack.stack--horizontal.stack--fullHeight.stack--gapSmall.stack--verticalPadSmall{
+    display:none;
+}
+
+/* .page__header{
+    display:none;
+} */
+
+#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(1){
+    margin-top:-45px;
+}
+
+#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2){
+    margin-top:-45px;
+}
+
+.hidden{
+    display:none !important;
+}
+
+.stash{
+    margin-top:-10px;
+}
+
+.stash .ds-tab--isActive .pill{
+    background: #eeb9de;
+    color:#000;
+    border:1px solid #eeb9de;
+}
+
+/* #fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall{
+    display:none;
+} */
 
 /* .utteranceContainer__filterWrapper .ds-tab.ds-tab--horizontal, .objectColumnContainer > .ds-tabs > .ds-tab.ds-tab--horizontal{
     border:none;
@@ -25,16 +71,16 @@
     border-bottom:5px solid blue;
 } */
 
-.stash .ds-tab.ds-tab--horizontal{
+
+
+/* .stash .ds-tab.ds-tab--horizontal{
     border:none;
     box-shadow:none;
 }
 
 .stash .ds-tab.ds-tab--horizontal.ds-tab--isActive{
     border-bottom:3px solid blue;
-}
-
-
-/* .pill--light{
-    background-color:rgb(244, 214, 233);
 } */
+
+
+

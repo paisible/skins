@@ -62,9 +62,7 @@
                 "background-color":"#fff"
             });
             $("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > header > div.separator.separator--noText").hide();
-            $("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2)").css({
-                "margin-top":"-50px"
-            });
+
             $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.stash__body").css({
                 "margin-top":"-2px"
             });
@@ -93,8 +91,19 @@
             buttonStash.appendChild(divTextStash);
 
             var parentElementStash = document.querySelector('#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal');
-            parentElementStash.insertBefore(buttonStash, parentElementStash.firstChild);
-            //$(parentElementStash).append(buttonStash);
+            var buttonStash2 = document.createElement('button');
+
+            parentElementStash.insertBefore(buttonStash2, parentElementStash.firstChild);
+            $(buttonStash2).css({"display":"none"});
+            
+            var parentElementStash = $("#fluid-layout-overlay-portal-0 > div > div.ds-tabs.ds-tabs--horizontal");
+            $(parentElementStash).append(buttonStash);
+            $(buttonStash).css(
+                {
+                    "position":"absolute",
+                    "right":"0px"
+                }
+            )
         
             $(".ds-tabs--horizontal").css({
                 "height":"43px"
@@ -105,6 +114,7 @@
             
             $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.stash__body > div.stack.stack--horizontal.stack--gapSmall.stack--verticalPadSmall.stashCTA").css({"margin-left":"15px"});
             $("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > header > div.page__subheader > div > div > div:nth-child(3)").css({"position":"fixed", "top":"10px", "right": "5px"})
+
 
             // $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > button.ds-tab.ds-tab--isActive.ds-tab--horizontal").text("Generated");
 
@@ -144,11 +154,27 @@
             // Update the button text
             $(buttonStash).text(`Stash (${num})`);
 
+            var activatedTab = null;
+            var lastActivatedTab = {
+                "Data" : $(labeled_data),
+                "Prompts" : $(generated_data)
+            }
+
+            $(".objectColumnContainer > .ds-tabs > .ds-tab").click(function(){
+                var tab = $(data_selected).text();
+                var selected = $('.utteranceContainer__filterWrapper .ds-tab--isActive');
+                if(selected.length == 0){
+                    selected = buttonStash
+                }
+                lastActivatedTab[tab] = selected;
+            });
 
             const handleLeftPanelChange = () => {
-                console.log("changed");
+                
                 // Do something when the innerHTML changes
-                setTimeout(function(){ruleEngineLogic();}, 100);
+                setTimeout(function(){
+                    ruleEngineLogic();
+                }, 100);
             };
 
             // Create a MutationObserver instance
@@ -189,6 +215,7 @@
             var selectedTab = null;
 
             function showStash(){
+               $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal").hide();
                dataFilters.hide();
                dataPredicates.hide();
                dataList.hide();
@@ -200,10 +227,12 @@
                $(buttonStash).addClass('activated');
                selectedTab = $('.utteranceContainer__filterWrapper .ds-tab--isActive');
                $(selectedTab).removeClass('ds-tab--isActive');
+               $('.utteranceContainer__filterWrapper .ds-tab').addClass('muted');
 
             }
 
             function showData(){
+                $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal").show();
                 dataFilters.show();
                 dataPredicates.show();
                 dataList.show();
@@ -215,6 +244,7 @@
                 try{
                     $(selectedTab).addClass('ds-tab--isActive');
                 }catch(exception){}
+                $('.utteranceContainer__filterWrapper .ds-tab').removeClass('muted');
                 
             }
 
@@ -254,15 +284,18 @@
                 // Start observing the target element for changes
                 observer.observe(stashContainer[0], observerConfig);
             }
-            stashListener();
 
-            var activatedTab = null;
+            stashListener();
 
             function ruleEngineLogic() {
 
-                var activeTab = activatedTab;
-                activatedTab = $('.utteranceContainer__filterWrapper .ds-tab--isActive');
                 
+                // var activeTab = activatedTab;
+                // activatedTab = $('.utteranceContainer__filterWrapper .ds-tab--isActive');
+                // if(activatedTab.length == 0){
+                //     activatedTab = buttonStash;
+                // }
+
                 setTimeout(function () {
 
                     const promptPinnedElement = document.querySelector(prompt_pinned);
@@ -272,7 +305,6 @@
                     var _stash = $(stash)
                     var _run_spinner = $(run_spinner)
 
-
                     try {
                         document.querySelector(run_cta).addEventListener('click', function (event) {
                             // Call the rule engine when a click event is triggered within the main menu or its child elements
@@ -280,71 +312,80 @@
                         });
                     } catch (exception) { }
 
-                    try {
-                        var elementToDelete = document.querySelector("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.stash__body > div.stash__toggleButton");
-
-                        // Check if the element exists before deleting it
-                        if (elementToDelete) {
-                            // Remove the element from its parent node
-                            elementToDelete.parentNode.removeChild(elementToDelete);
-                        }
-                    } catch (exception) { }
-
+                    var mainTab = dataSelected.text()
 
                     try{
                         $(".hierarchicalIntent").each(function(index){
-                            // $(this).unbind("click");
+                            $(this).unbind("click");
+
                             $(this).click(function(){
                                 $(this).off('click');
                                
-                                if (dataSelected.textContent !== 'Data') {
+                                if (mainTab !== 'Data') {
+                                    $(".showIntentDataCTA", this).click();
                                     $(".pinIntentCTA", this).click();
-                                        buttonStash.click();
-
+                                    // if(!$(buttonStash).hasClass('activated')){
+                                    //     buttonStash.click();
+                                    // }
                                 }
                                 else{
-                                    $(".showIntentDataCTA", this).click();
+                                    if($(buttonStash).hasClass('activated')){
+                                        $(".pinIntentCTA", this).click();
+                                    }
+                                    else{
+                                        $(".showIntentDataCTA", this).click();
+                                    }
+                                    
                                 }
                             });
                         });
                     }catch(exception){}
 
+                    try{
+                        // put the generation run filter first
+                        var filterContainer = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills";
+                        var genFilter = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.buttonGroup.nlgFilter.nlgFilter--active";
+                        var genFilter2 = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.buttonGroup.nlgFilter";
+                        $(filterContainer)[0].insertBefore($(genFilter)[0], $(filterContainer)[0].firstChild);
+                        $(filterContainer)[0].insertBefore($(genFilter2)[0], $(filterContainer)[0].firstChild);
+                       
 
-                    if (dataSelected.text() === 'Data') {
+                    }catch(exception){}    
+                    
+                    if (mainTab === 'Data') {
+                        var tabContainer = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal";
+                        $(tabContainer).show();
+
                         $(generated_data).hide();
                         $(labeled_data).show();
                         $(unlabeled_data).show();
-                        
-                        if(activeTab){
-                            activeTab.click();
-                        }
+                        var dataFilter = $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.genericPredicatePill.explorePredicateImplicitIntentMatch__pill.explorePredicateImplicitIntentMatch__pill--notActive");
+                        dataFilter.removeClass("hidden");
+                
                     }
 
                     else {
-                        $(generated_data).show();
+
+                        var tabContainer = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal";
+                        $(tabContainer).hide();
+
+                        $(generated_data).hide();
                         $(labeled_data).hide();
                         $(unlabeled_data).hide();
-                        
-                        $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.genericPredicatePill.explorePredicateImplicitIntentMatch__pill > div.genericPredicatePill__closeCTA").click();
-                        
-                        if (promptPinnedElement && _run_spinner.length == 0) {
+                        var dataFilter = $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.genericPredicatePill.explorePredicateImplicitIntentMatch__pill.explorePredicateImplicitIntentMatch__pill--notActive");
+                        dataFilter.addClass("hidden");
+                
+                    }
 
-                            if (_stash && !_stash.hasClass('activated')) {
-                                _stash.click();
-                            }
-
+                    var lastTab = lastActivatedTab[mainTab];
+                    if(lastTab){
+                        if(!(lastTab == buttonStash && $(buttonStash).hasClass('activated'))){
+                            lastTab.click();
+                            lastActivatedTab[mainTab] = null;
                         }
-
-                        else {
-
+                        else{
+                            lastActivatedTab[mainTab] = null;
                         }
-
-                        if(!promptPinnedElement){
-                            try{
-                                // $('#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.buttonGroup.nlgFilter.nlgFilter--active > div > button').click();
-                            }catch(exception){}
-                        }
-
                     }
 
                 }, 100);
