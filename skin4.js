@@ -2,6 +2,47 @@
     console.log('tm script loaded')
     'use strict';
 
+    function getPath($el) {
+        var node = $el;
+        var path;
+        
+        while (node.length) {
+            var realNode = node.get(0);
+            var name = realNode.localName;
+        
+            // Qualify as much as possible
+            if(realNode.id) {
+            name += '#' + realNode.id;
+
+            } else if(realNode.className) {
+                var classes = realNode.className.split(' ');
+
+                for(var i = 0; i < classes.length; i++ ){
+                    name += '.' + classes[i];
+                }
+            
+            }
+        
+            if(!name) break;
+            // name = name.toLowerCase();
+        
+            // Make the selector unique at all costs
+            siblings = node.siblings(name)
+            if(siblings.length > 1) {
+            var index = node.index() + 1;
+            if(index > 1) {
+                name += ':nth-child(' + index + ')';
+            }
+            }
+        
+            path = name + (path ? '>' + path : '');
+            node = node.parent();
+        }
+        
+        return path;
+        }
+      
+
     function isElementVisible(element) {
         const style = window.getComputedStyle(element);
         return style.display !== 'none' && style.visibility !== 'hidden';
@@ -92,7 +133,7 @@
             document.head.appendChild(styleElement);
 
             var buttonStash = document.createElement('button');
-            buttonStash.className = 'DS-button DS-button--small';
+            buttonStash.className = 'DS-button DS-button--small DS-button__tercery';
             //buttonStash.className = 'ds-tab ds-tab--horizontal stash'
             buttonStash.style.position = "relative";
             buttonStash.style.height = "30px";
@@ -158,7 +199,7 @@
             )
 
             var buttonApplyToPrompt = document.createElement('button');
-            buttonApplyToPrompt.textContent = "Use with prompt"
+            buttonApplyToPrompt.textContent = "Apply to prompt"
             buttonApplyToPrompt.id = 'applyToPrompt'
             buttonApplyToPrompt.className = 'blue DS-button DS-button--x-small';
             var parentElement = $(".stack.stashCTA");
@@ -166,10 +207,12 @@
 
             $(buttonApplyToPrompt).click(function(){
                 
-                $(".runPrompt, .promptRunMode").each(function(){
-                    $(this).addClass('active');
-                });
-                $(this).addClass('hidden');
+                $('#fluid-layout-overlay-portal-0 > div > div.ds-tabs.ds-tabs--horizontal > button:nth-child(1)').click();
+                
+                // $(".runPrompt, .promptRunMode").each(function(){
+                //     $(this).addClass('active');
+                // });
+                // $(this).addClass('hidden');
                 // $(buttonStash).click();
                 
             });
@@ -177,7 +220,7 @@
             var buttonSelectData = document.createElement('button');
             buttonSelectData.textContent = "Select data"
             buttonSelectData.id = 'selectData'
-            buttonSelectData.className = 'blue DS-button DS-button--x-small';
+            buttonSelectData.className = 'blue DS-button DS-button--x-small DS-button--secondary';
             //var parentElement = $(".stack.stashCTA");
             var parentElement = $('#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.stash__body > div.stash__manualInput > fieldset > div');
             $(buttonSelectData).insertBefore($('.stash__manualInput .textInput__input'), $(parentElement));
@@ -191,7 +234,7 @@
             var buttonSaveData = document.createElement('button');
             buttonSaveData.textContent = "Save data"
             buttonSaveData.id = 'saveData'
-            buttonSaveData.className = 'blue DS-button DS-button--x-small';
+            buttonSaveData.className = 'blue DS-button DS-button--x-small DS-button--secondary';
             var parentElement = $(".stack.stashCTA");
             $(parentElement).append(buttonSaveData);
 
@@ -201,15 +244,15 @@
 
             //////////
 
-            var addNewPromptTab = function(promptName){
+            var addNewPromptTab = function(promptName, onClick){
                 var tab = document.createElement('button');
                 tab.className = 'ds-tab ds-tab--isActive ds-tab--horizontal prompts';
                 tab.id = promptName;
 
                 var container = $('#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal.depth');
                 $('.ds-tab--isActive', container).removeClass('ds-tab--isActive');
-                $(container).append(tab);
 
+                $(container).append(tab);
 
                 //var clone = $('.nlgFilter').clone(true,true);
                 var elem = $('<div class="genericPredicatePill explorePredicateImplicitIntentMatch__pill" data-primary="false" data-disabled="false" data-secondary="false"><div class="genericPredicatePill__text" aria-expanded="false"><div class="genericPredicatePill__text__visible"><span class="genericPredicatePill__predicateName">Data labeled in: </span><strong class="genericPredicatePill__predicateValue">synonym2</strong></div></div><div class="genericPredicatePill__closeCTA"><div class="playbookIcon " data-size="xxs" data-disabled="false" data-animated="false" data-icon-type="close" data-theme="secondary"><svg viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path></svg></div></div></div>');
@@ -218,6 +261,14 @@
                 $('.genericPredicatePill__predicateValue', elem).text(promptName);
 
                 $(tab).append(elem);
+                $(tab).click(function(){
+                    $('.ds-tab--isActive', container).removeClass('ds-tab--isActive');
+                    $(this).addClass('ds-tab--isActive');
+                    onClick();
+                });
+
+                lastActivatedTab['Prompts'] = tab;
+
             }
 
         
@@ -281,10 +332,12 @@
             */
             $(".objectColumnContainer > .ds-tabs > .ds-tab").click(function(){
                 var tab = $(data_selected).text();
+                
                 var selected = $('.utteranceContainer__filterWrapper .ds-tab--isActive');
                 if(selected.length == 0){
                     selected = buttonStash
                 }
+
                 lastActivatedTab[tab] = selected;
 
                 var c = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills";
@@ -321,13 +374,8 @@
             observer3.observe(leftPanel[0], observerConfig);
 
             var _data_tab = document.querySelector(data_tab);
-
             var left_panel = '#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(1)'
             
-            // document.querySelector(left_panel).addEventListener('click', function (event) {
-            //     // Call the rule engine when a click event is triggered within the main menu or its child elements
-            //     setTimeout(function(){ruleEngineLogic();}, 100)
-            // });
             
             var dataFilters = $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters");
             var dataPredicates = $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.predicateWrapper__container");
@@ -349,12 +397,18 @@
                stashItems.show();
                stashBody.show();
                $(dataContainer).insertBefore(stashContainer);
+
                status = "stash";
+
                $(buttonStash).removeClass('DS-button--secondary');
                $(buttonStash).addClass('activated');
                selectedTab = $('.utteranceContainer__filterWrapper .ds-tab--isActive');
                // $(selectedTab).removeClass('ds-tab--isActive');
                $('.utteranceContainer__filterWrapper .ds-tab').addClass('muted');
+
+               $(".runPrompt, .promptRunMode").each(function(){
+                    $(this).addClass('active');
+               });
 
                // $(buttonNewGen).show();
                $(buttonApplyToPrompt).show();
@@ -370,7 +424,9 @@
                 stashItems.hide();
                 stashBody.hide();
                 $(stashContainer).insertBefore(dataContainer);
+
                 status = "data";
+
                 $(buttonStash).removeClass('activated');
                 try{
                     $(selectedTab).addClass('ds-tab--isActive');
@@ -427,8 +483,8 @@
                 // Start observing the target element for changes
                 observer.observe(stashContainer[0], observerConfig);
             }
-
             stashListener();
+
             document.selectedItems = [];
 
             function ruleEngineLogic() {
@@ -457,6 +513,8 @@
                     //     });
                     // })
 
+                    $('.promptPanel__return .DS_iconButton, .intentPanel__return .DS_iconButton').addClass('fluidLayout__handles__left prompt');
+
                     const promptPinnedElement = document.querySelector(prompt_pinned);
 
                     var dataSelected = $(data_selected);
@@ -481,16 +539,46 @@
                             $(this).unbind("click");
 
                             $(this).click(function(){
+
                                 $(this).off('click');
                                
                                 if (mainTab !== 'Data') {
+
                                     $(".showIntentDataCTA", this).click();
                                     $(".pinIntentCTA", this).click();
 
+                                    var _a = getPath($(".showIntentDataCTA", this));
+                                    var _b = getPath($(".pinIntentCTA", this));
+
+                                    var that = this;
+
+                                    // var _a = Math.ceil(Math.random() * 100000); // $(".showIntentDataCTA", this);
+                                    // var _b = Math.ceil(Math.random() * 100000); // $(".pinIntentCTA", this);
+                                    // $(".showIntentDataCTA", this).attr('id', _a);
+                                    // $(".pinIntentCTA", this).attr('id', _b);
+
+                                    var clonedFunction = function(){
+
+                                        $('.prompt').click();
+                                        
+                                        setTimeout(function(){
+                                            try{
+                                                $(_a).click();
+                                                $(_b).click();
+                                                //eval('$(\'#' + _a +'\').click();');
+                                                //eval('$(\'#' + _b +'\').click();');
+
+                                                // $('#' + _b).click();
+                                            }catch(exception){
+                                                console.log(exception);
+                                            }
+                                        },100)
+                                    }
+
                                     setTimeout(function(){
                                         var promptName = $('.textInput__input').attr('value');
-                                        addNewPromptTab(promptName);
-                                    },500);
+                                        addNewPromptTab(promptName, clonedFunction);
+                                    },300);
                                     
                                     
                                     // if(!$(buttonStash).hasClass('activated')){
@@ -532,6 +620,10 @@
                 
                         $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.genericPredicatePill.explorePredicateImplicitIntentMatch__pill.explorePredicateImplicitIntentMatch__pill--notActive").wrap("<div id='data_tab' class='ds-tab ds-tab--isActive ds-tab--horizontal'></div>");
                         $("#data_tab").show();
+
+                        $(buttonApplyToPrompt).show();
+                        $(buttonSaveData).hide();
+                        $(buttonSelectData).hide();
                         
                     }
 
@@ -549,14 +641,14 @@
 
                         $('.ds-tab.prompts').show();
 
-                        
+                        // re-add New Run button
                         $(buttonNewGen).show();
                         $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters.ds-tabs.ds-tabs--horizontal > div.predicateWrapper__pills").append(buttonNewGen);
 
+                        // 
                         $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top").addClass('depth');
                         $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal").addClass('depth');
 
-                        // $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters.ds-tabs.ds-tabs--horizontal > div.predicateWrapper__pills > div.ds-tab.ds-tab--horizontal").hide();
                         $("#data_tab").hide();
 
                         // setTimeout(function(){
@@ -567,29 +659,17 @@
                             $(".promptPanel__pinnedObjectPath").addClass('relocate');
                             $("#fluid-layout-overlay-portal-0 > div > div.promptPanel > div > div.promptPanel__return > h2").hide();
                         }catch(exception){}
-
-
-                        $('.nlgFilter__decrement, nlgFilter__increment').click(function(){
-                            setTimeout(function(){
-                                $('.nlgFilter__clear').click(function(){
-                                    setTimeout(function(){
-                                        // $('.nlgFilter__name').text('All runs');
-                                    },50);
-                                });
-                            },50);
-  
-                        });
-
  
                         $(generated_data).click(function(){
                             $('.nlgFilter__clear').click();
                         });
 
                         $(generated_data).text('All prompts');
-                        
-                        $('.promptPanel__return .DS_iconButton').addClass('fluidLayout__handles__left prompt');
-                        
 
+                        $(buttonApplyToPrompt).hide();
+                        $(buttonSaveData).show();
+                        $(buttonSelectData).show();
+                        
                         // try{
                         //     // put the generation run filter first
                         //     var filterContainer = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills";
@@ -617,6 +697,7 @@
                     }
 
                     var lastTab = lastActivatedTab[mainTab];
+                    var _status = status;
                     if(lastTab){
                         if(!(lastTab == buttonStash && $(buttonStash).hasClass('activated'))){
                             lastTab.click();
@@ -624,6 +705,11 @@
                         }
                         else{
                             lastActivatedTab[mainTab] = null;
+                        }
+                    }
+                    if(_status == "stash"){
+                        if(!$(buttonStash).hasClass('activated')){
+                            $(buttonStash).click();
                         }
                     }
 
