@@ -134,8 +134,7 @@
             // $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal").append(buttonNewGen);
             setTimeout(function(){
                 $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters.ds-tabs.ds-tabs--horizontal > div.predicateWrapper__pills").append(buttonNewGen);
-            
-            },500)
+            },10)
             
             $(buttonNewGen).click(function(){
                 
@@ -144,8 +143,8 @@
                 });
                 $(buttonStash).click();
                 setTimeout(function(){
-                    //$('.applyToPrompt').hide();
-                },50)
+                    $('#applyToPrompt').hide();
+                },200)
                 
             });
 
@@ -175,12 +174,36 @@
                 
             });
 
+            var buttonSelectData = document.createElement('button');
+            buttonSelectData.textContent = "Select data"
+            buttonSelectData.id = 'selectData'
+            buttonSelectData.className = 'blue DS-button DS-button--x-small';
+            //var parentElement = $(".stack.stashCTA");
+            var parentElement = $('#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.stash__body > div.stash__manualInput > fieldset > div');
+            $(buttonSelectData).insertBefore($('.stash__manualInput .textInput__input'), $(parentElement));
+            
+            $('.textInput__input', $(parentElement)).attr('placeholder', '... or copy/paste text here');
+
+            $(buttonSelectData).click(function(){
+                $('#fluid-layout-overlay-portal-0 > div > div.ds-tabs.ds-tabs--horizontal > button:nth-child(2)').click();
+            });
+
+            var buttonSaveData = document.createElement('button');
+            buttonSaveData.textContent = "Save data"
+            buttonSaveData.id = 'saveData'
+            buttonSaveData.className = 'blue DS-button DS-button--x-small';
+            var parentElement = $(".stack.stashCTA");
+            $(parentElement).append(buttonSaveData);
+
+            // $(buttonSaveData).click(function(){
+            //     $('#fluid-layout-overlay-portal-0 > div > div.ds-tabs.ds-tabs--horizontal > button:nth-child(2)').click();
+            // });
 
             //////////
 
             var addNewPromptTab = function(promptName){
                 var tab = document.createElement('button');
-                tab.className = 'ds-tab ds-tab--isActive ds-tab--horizontal';
+                tab.className = 'ds-tab ds-tab--isActive ds-tab--horizontal prompts';
                 tab.id = promptName;
 
                 var container = $('#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal.depth');
@@ -268,6 +291,7 @@
                 var filter = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters.ds-tabs.ds-tabs--horizontal > div.predicateWrapper__pills > div.ds-tab.ds-tab--isActive.ds-tab--horizontal > div"
                 $(c).append($(filter));
                 $("#prompt_tab").remove();
+                console.log("successfully removed");
 
             });
 
@@ -276,7 +300,7 @@
                 // Do something when the innerHTML changes
                 setTimeout(function(){
                     ruleEngineLogic();
-                }, 100);
+                }, 150);
             };
 
             // Create a MutationObserver instance
@@ -332,7 +356,7 @@
                // $(selectedTab).removeClass('ds-tab--isActive');
                $('.utteranceContainer__filterWrapper .ds-tab').addClass('muted');
 
-               $(buttonNewGen).show();
+               // $(buttonNewGen).show();
                $(buttonApplyToPrompt).show();
 
             }
@@ -472,6 +496,7 @@
                                     // if(!$(buttonStash).hasClass('activated')){
                                     //     buttonStash.click();
                                     // }
+
                                 }
                                 else{
                                     if($(buttonStash).hasClass('activated')){
@@ -499,6 +524,8 @@
                         dataFilter.removeClass("hidden");
                         $(buttonNewGen).hide();
 
+                        $('.ds-tab.prompts').hide();
+
                         $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top").addClass('depth');
                         $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal").addClass('depth');
 
@@ -520,7 +547,11 @@
                         var dataFilter = $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.genericPredicatePill.explorePredicateImplicitIntentMatch__pill.explorePredicateImplicitIntentMatch__pill--notActive");
                         dataFilter.addClass("hidden");
 
+                        $('.ds-tab.prompts').show();
+
+                        
                         $(buttonNewGen).show();
+                        $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters.ds-tabs.ds-tabs--horizontal > div.predicateWrapper__pills").append(buttonNewGen);
 
                         $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top").addClass('depth');
                         $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal").addClass('depth');
@@ -528,9 +559,9 @@
                         // $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters.ds-tabs.ds-tabs--horizontal > div.predicateWrapper__pills > div.ds-tab.ds-tab--horizontal").hide();
                         $("#data_tab").hide();
 
-                        setTimeout(function(){
-                            $("div.predicateWrapper__pills > div.buttonGroup.nlgFilter").wrap("<div id='prompt_tab' class='ds-tab ds-tab--isActive ds-tab--horizontal'></div>");
-                        },100);
+                        // setTimeout(function(){
+                        //     $("div.predicateWrapper__pills > div.buttonGroup.nlgFilter").wrap("<div id='prompt_tab' class='ds-tab ds-tab--isActive ds-tab--horizontal'></div>");
+                        // },100);
 
                         try{
                             $(".promptPanel__pinnedObjectPath").addClass('relocate');

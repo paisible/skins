@@ -73,8 +73,10 @@
 }
 
 #fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters.ds-tabs.ds-tabs--horizontal > div.predicateWrapper__pills > div{
-    border-bottom-color:#fff;
-    box-shadow:0px 11px 19px -1px #97a3c6;
+    /* border-bottom-color:#fff;
+    box-shadow:0px 11px 19px -1px #97a3c6; */
+    position:relative;
+    top:-10px;
 }
 
 .stack .genericPredicatePill{
@@ -96,9 +98,25 @@
     border:none;
 }
 
+.stack > div > button.ds-tab--isActive > .genericPredicatePill.explorePredicateImplicitIntentMatch__pill  .genericPredicatePill__predicateValue{
+    background:oldlace;
+}
+
 .stack > div > button > .genericPredicatePill.explorePredicateImplicitIntentMatch__pill  .genericPredicatePill__predicateValue{
     font-weight:normal;
     border:none !important;
+    background:oldlace;
+    color:#3f5597;
+}
+
+.stack > div > button.ds-tab--isActive > .genericPredicatePill.explorePredicateImplicitIntentMatch__pill  .genericPredicatePill__predicateValue{
+    background:oldlace;
+    color:#5064fb;
+}
+
+.stack > div > button.muted > .genericPredicatePill.explorePredicateImplicitIntentMatch__pill  .genericPredicatePill__predicateValue{
+    color:#bbb;
+    background:#fff
 }
 
 .nlgFilter__content{
@@ -107,9 +125,11 @@
 }
 
 .fluidLayout__handles__left.prompt{
-    top:5px;
+    top:10px;
     left:10px
 }
+
+
 
 /* .sortableTable__actionType .ds-checkbox{
     margin-left:0px;
@@ -132,7 +152,9 @@
 .promptNameField .textInput__input{
     font-size:1.3em;
     margin-left:-5px;
-    margin-top:3px;
+    margin-top:8px;
+    /*background:oldlace;*/
+    padding-left:10px;
 }
 
 .promptRunMode{
