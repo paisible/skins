@@ -77,12 +77,38 @@
     box-shadow:0px 11px 19px -1px #97a3c6;
 }
 
-.genericPredicatePill{
-    display:none;
+.stack .genericPredicatePill{
+    display:flex;
 }
 
-.genericPredicatePill.explorePredicateImplicitIntentMatch__pill{
+
+.predicateWrapper__pills .genericPredicatePill{
+    display:none;
+} 
+
+.stack .genericPredicatePill.explorePredicateImplicitIntentMatch__pill{
     display:flex;
+}
+
+.stack > div > button > .genericPredicatePill.explorePredicateImplicitIntentMatch__pill{
+    display:flex;
+    background:#fff;
+    border:none;
+}
+
+.stack > div > button > .genericPredicatePill.explorePredicateImplicitIntentMatch__pill  .genericPredicatePill__predicateValue{
+    font-weight:normal;
+    border:none !important;
+}
+
+.nlgFilter__content{
+    color:#000;
+    font-size:0.9em;
+}
+
+.fluidLayout__handles__left.prompt{
+    top:5px;
+    left:10px
 }
 
 /* .sortableTable__actionType .ds-checkbox{
@@ -92,6 +118,40 @@
 .intentPanel .DS-virtualTable td{
     padding-left:0px;
 }
+
+.promptPanel__pinnedObjectPath.relocate{
+    margin-top:-50px;
+    margin-left:50px;
+    width:70%;
+}
+
+.promptPanel__pinnedObjectPath .objectPath{
+    display:none;
+}
+
+.promptNameField .textInput__input{
+    font-size:1.3em;
+    margin-left:-5px;
+    margin-top:3px;
+}
+
+.promptRunMode{
+    display:none;
+}
+
+.promptRunMode.active{
+    display:block;
+}
+
+.runPrompt{
+    display:none;
+}
+
+.runPrompt.active{
+    display:flex;
+}
+
+
 
 /* .ds-tab{
     background:#fff;

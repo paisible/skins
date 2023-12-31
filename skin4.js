@@ -37,6 +37,20 @@
         if (targetElement) {
             clearInterval(pollInterval);
 
+            const root = document.querySelector('#reactApp');
+
+ 
+
+            // root.addEventListener('mousedown', (e) => {
+            //     //if (e.target.tagName === 'BUTTON' && e.target.className === 'my-button') {
+            //     console.log(e);  
+            //     e.stopPropagation()
+            //     e.nativeEvent.stopImmediatePropagation()
+            //       //location.href = 'http://stackoverflow.com'
+            //     //}
+            //   })
+
+
             document.clicks = 0;            
             $('body').on('click', function(event){
               document.clicks++
@@ -68,6 +82,9 @@
             });
 
             // $(generated_data).append($("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > div > div"));
+
+
+            //////////////
 
             var css = ".utteranceCell .utteranceCell__inner { white-space: normal }"; // Replace with your desired inline CSS
             var styleElement = document.createElement("style");
@@ -103,18 +120,35 @@
             
             var buttonNewGen = document.createElement('button');
             buttonNewGen.className = 'DS-button DS-button--small newRun';
+            // buttonNewGen.className = 'ds-tab ds-tab--horizontal';
+            buttonNewGen.id = 'new_run';
             buttonNewGen.style.position = "relative";
-            buttonNewGen.style.height = "30px";
-            buttonNewGen.style.top = "8px";
-            buttonNewGen.style.height = "30px";
+            buttonNewGen.style.height = "25px";
+            // buttonNewGen.style.top = "8px";
             buttonNewGen.style.marginRight = "10px";
             buttonNewGen.style.marginLeft = "10px";
+            buttonNewGen.style.top = "-13px";
 
 
             buttonNewGen.textContent = "New Run";
             // $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal").append(buttonNewGen);
+            setTimeout(function(){
+                $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters.ds-tabs.ds-tabs--horizontal > div.predicateWrapper__pills").append(buttonNewGen);
             
+            },500)
             
+            $(buttonNewGen).click(function(){
+                
+                $(".runPrompt, .promptRunMode").each(function(){
+                    $(this).addClass('active');
+                });
+                $(buttonStash).click();
+                setTimeout(function(){
+                    //$('.applyToPrompt').hide();
+                },50)
+                
+            });
+
             var parentElementStash = $("#fluid-layout-overlay-portal-0 > div > div.ds-tabs.ds-tabs--horizontal");
             $(parentElementStash).append(buttonStash);
             $(buttonStash).css(
@@ -123,6 +157,46 @@
                     "right":"0px"
                 }
             )
+
+            var buttonApplyToPrompt = document.createElement('button');
+            buttonApplyToPrompt.textContent = "Use with prompt"
+            buttonApplyToPrompt.id = 'applyToPrompt'
+            buttonApplyToPrompt.className = 'blue DS-button DS-button--x-small';
+            var parentElement = $(".stack.stashCTA");
+            $(parentElement).append(buttonApplyToPrompt);
+
+            $(buttonApplyToPrompt).click(function(){
+                
+                $(".runPrompt, .promptRunMode").each(function(){
+                    $(this).addClass('active');
+                });
+                $(this).addClass('hidden');
+                // $(buttonStash).click();
+                
+            });
+
+
+            //////////
+
+            var addNewPromptTab = function(promptName){
+                var tab = document.createElement('button');
+                tab.className = 'ds-tab ds-tab--isActive ds-tab--horizontal';
+                tab.id = promptName;
+
+                var container = $('#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal.depth');
+                $('.ds-tab--isActive', container).removeClass('ds-tab--isActive');
+                $(container).append(tab);
+
+
+                //var clone = $('.nlgFilter').clone(true,true);
+                var elem = $('<div class="genericPredicatePill explorePredicateImplicitIntentMatch__pill" data-primary="false" data-disabled="false" data-secondary="false"><div class="genericPredicatePill__text" aria-expanded="false"><div class="genericPredicatePill__text__visible"><span class="genericPredicatePill__predicateName">Data labeled in: </span><strong class="genericPredicatePill__predicateValue">synonym2</strong></div></div><div class="genericPredicatePill__closeCTA"><div class="playbookIcon " data-size="xxs" data-disabled="false" data-animated="false" data-icon-type="close" data-theme="secondary"><svg viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path></svg></div></div></div>');
+
+                $('.genericPredicatePill__predicateName', elem).text('');
+                $('.genericPredicatePill__predicateValue', elem).text(promptName);
+
+                $(tab).append(elem);
+            }
+
         
             $(".ds-tabs--horizontal").css({
                 "height":"43px"
@@ -255,10 +329,11 @@
                $(buttonStash).removeClass('DS-button--secondary');
                $(buttonStash).addClass('activated');
                selectedTab = $('.utteranceContainer__filterWrapper .ds-tab--isActive');
-               $(selectedTab).removeClass('ds-tab--isActive');
+               // $(selectedTab).removeClass('ds-tab--isActive');
                $('.utteranceContainer__filterWrapper .ds-tab').addClass('muted');
 
                $(buttonNewGen).show();
+               $(buttonApplyToPrompt).show();
 
             }
 
@@ -277,7 +352,12 @@
                     $(selectedTab).addClass('ds-tab--isActive');
                 }catch(exception){}
                 $('.utteranceContainer__filterWrapper .ds-tab').removeClass('muted');
-                $(buttonNewGen).hide();
+
+                // $(buttonNewGen).hide();
+
+                $(".runPrompt, .promptRunMode").each(function(){
+                    $(this).removeClass('active');
+                })
 
             }
 
@@ -286,7 +366,7 @@
                 if($(this).hasClass('stash')){
                     showStash();
                 }
-                else{
+                else if(!($(this).attr('id') == 'new_run')){
                     showData();
                 }
                 $(".utteranceContainer__filterWrapper .ds-tab").removeClass('ds-tab--isActive');
@@ -325,6 +405,7 @@
             }
 
             stashListener();
+            document.selectedItems = [];
 
             function ruleEngineLogic() {
 
@@ -336,6 +417,21 @@
                 // }
 
                 setTimeout(function () {
+
+                    
+                    // $('.ds-checkbox__input').each(function(){
+                    //     $(this).css({
+                    //         "appearance":"checkbox"
+                    //     })
+                    //     $(this).on('mousedown click mouseup', function(e){
+                    //         $(this).attr('checked',true);
+                    //         e.stopPropagation();
+                    //         // e.stopImmediatePropagation();
+                    //         e.preventDefault();
+                    //         // console.log($(this).attr('checked'));
+                    //         document.selectedItems.push(this);
+                    //     });
+                    // })
 
                     const promptPinnedElement = document.querySelector(prompt_pinned);
 
@@ -366,6 +462,13 @@
                                 if (mainTab !== 'Data') {
                                     $(".showIntentDataCTA", this).click();
                                     $(".pinIntentCTA", this).click();
+
+                                    setTimeout(function(){
+                                        var promptName = $('.textInput__input').attr('value');
+                                        addNewPromptTab(promptName);
+                                    },500);
+                                    
+                                    
                                     // if(!$(buttonStash).hasClass('activated')){
                                     //     buttonStash.click();
                                     // }
@@ -419,8 +522,8 @@
 
                         $(buttonNewGen).show();
 
-                        $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top").removeClass('depth');
-                        $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal").removeClass('depth');
+                        $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top").addClass('depth');
+                        $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal").addClass('depth');
 
                         // $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters.ds-tabs.ds-tabs--horizontal > div.predicateWrapper__pills > div.ds-tab.ds-tab--horizontal").hide();
                         $("#data_tab").hide();
@@ -428,6 +531,33 @@
                         setTimeout(function(){
                             $("div.predicateWrapper__pills > div.buttonGroup.nlgFilter").wrap("<div id='prompt_tab' class='ds-tab ds-tab--isActive ds-tab--horizontal'></div>");
                         },100);
+
+                        try{
+                            $(".promptPanel__pinnedObjectPath").addClass('relocate');
+                            $("#fluid-layout-overlay-portal-0 > div > div.promptPanel > div > div.promptPanel__return > h2").hide();
+                        }catch(exception){}
+
+
+                        $('.nlgFilter__decrement, nlgFilter__increment').click(function(){
+                            setTimeout(function(){
+                                $('.nlgFilter__clear').click(function(){
+                                    setTimeout(function(){
+                                        // $('.nlgFilter__name').text('All runs');
+                                    },50);
+                                });
+                            },50);
+  
+                        });
+
+ 
+                        $(generated_data).click(function(){
+                            $('.nlgFilter__clear').click();
+                        });
+
+                        $(generated_data).text('All prompts');
+                        
+                        $('.promptPanel__return .DS_iconButton').addClass('fluidLayout__handles__left prompt');
+                        
 
                         // try{
                         //     // put the generation run filter first
