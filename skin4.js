@@ -75,6 +75,8 @@
 
         var targetElement = document.querySelector("#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(2) > div > div > div > div > div.utteranceContainer__stash.utteranceContainer__stash--top > div > div.ds-tabs.ds-tabs--hideBottomLine.ds-tabs--horizontal")
         
+        var cancelRefresh = false;
+
         if (targetElement) {
             clearInterval(pollInterval);
 
@@ -245,27 +247,44 @@
             //////////
 
             var addNewPromptTab = function(promptName, onClick){
-                var tab = document.createElement('button');
-                tab.className = 'ds-tab ds-tab--isActive ds-tab--horizontal prompts';
-                tab.id = promptName;
 
-                var container = $('#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal.depth');
-                $('.ds-tab--isActive', container).removeClass('ds-tab--isActive');
+                promptName = promptName.replace(' ','_');
+                var tab = $("#" + promptName);
 
-                $(container).append(tab);
+                if(tab.length == 0){
 
-                //var clone = $('.nlgFilter').clone(true,true);
-                var elem = $('<div class="genericPredicatePill explorePredicateImplicitIntentMatch__pill" data-primary="false" data-disabled="false" data-secondary="false"><div class="genericPredicatePill__text" aria-expanded="false"><div class="genericPredicatePill__text__visible"><span class="genericPredicatePill__predicateName">Data labeled in: </span><strong class="genericPredicatePill__predicateValue">synonym2</strong></div></div><div class="genericPredicatePill__closeCTA"><div class="playbookIcon " data-size="xxs" data-disabled="false" data-animated="false" data-icon-type="close" data-theme="secondary"><svg viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path></svg></div></div></div>');
+                    tab = document.createElement('button');
+                    tab.className = 'ds-tab ds-tab--isActive ds-tab--horizontal prompts';
+                    tab.id = promptName;
 
-                $('.genericPredicatePill__predicateName', elem).text('');
-                $('.genericPredicatePill__predicateValue', elem).text(promptName);
-
-                $(tab).append(elem);
-                $(tab).click(function(){
+                    var container = $('#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal.depth');
                     $('.ds-tab--isActive', container).removeClass('ds-tab--isActive');
-                    $(this).addClass('ds-tab--isActive');
-                    onClick();
-                });
+
+                    $(container).append(tab);
+
+                    //var clone = $('.nlgFilter').clone(true,true);
+                    var elem = $('<div class="genericPredicatePill explorePredicateImplicitIntentMatch__pill" data-primary="false" data-disabled="false" data-secondary="false"><div class="genericPredicatePill__text" aria-expanded="false"><div class="genericPredicatePill__text__visible"><span class="genericPredicatePill__predicateName">Data labeled in: </span><strong class="genericPredicatePill__predicateValue">synonym2</strong></div></div><div class="genericPredicatePill__closeCTA"><div class="playbookIcon " data-size="xxs" data-disabled="false" data-animated="false" data-icon-type="close" data-theme="secondary"><svg viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path></svg></div></div></div>');
+
+                    $('.genericPredicatePill__predicateName', elem).text('');
+                    $('.genericPredicatePill__predicateValue', elem).text(promptName);
+
+                    $(tab).append(elem);
+
+                    $(tab).click(function(){
+                        cancelRefresh = true;
+                        $('.ds-tab--isActive', container).removeClass('ds-tab--isActive');
+                        $(this).addClass('ds-tab--isActive');
+                        
+                        lastActivatedTab['Prompts'] = $(tab);
+                        onClick();
+
+                    });
+
+                }
+
+                else{
+                    $(tab).click();
+                }
 
                 lastActivatedTab['Prompts'] = tab;
 
@@ -340,20 +359,23 @@
 
                 lastActivatedTab[tab] = selected;
 
-                var c = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills";
-                var filter = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters.ds-tabs.ds-tabs--horizontal > div.predicateWrapper__pills > div.ds-tab.ds-tab--isActive.ds-tab--horizontal > div"
-                $(c).append($(filter));
-                $("#prompt_tab").remove();
+                //var c = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills";
+                //var filter = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters.ds-tabs.ds-tabs--horizontal > div.predicateWrapper__pills > div.ds-tab.ds-tab--isActive.ds-tab--horizontal > div"
+                //$(c).append($(filter));
+                //$("#prompt_tab").remove();
                 console.log("successfully removed");
 
             });
 
             const handleLeftPanelChange = () => {
                 
-                // Do something when the innerHTML changes
-                setTimeout(function(){
-                    ruleEngineLogic();
-                }, 150);
+                
+                if(!cancelRefresh){
+                    // Do something when the innerHTML changes
+                    setTimeout(function(){
+                        ruleEngineLogic();
+                    }, 150);
+                }
             };
 
             // Create a MutationObserver instance
@@ -404,6 +426,7 @@
                $(buttonStash).addClass('activated');
                selectedTab = $('.utteranceContainer__filterWrapper .ds-tab--isActive');
                // $(selectedTab).removeClass('ds-tab--isActive');
+
                $('.utteranceContainer__filterWrapper .ds-tab').addClass('muted');
 
                $(".runPrompt, .promptRunMode").each(function(){
@@ -441,7 +464,6 @@
 
             }
 
-            
             $(".utteranceContainer__filterWrapper .ds-tab").click(function(){
                 if($(this).hasClass('stash')){
                     showStash();
@@ -489,29 +511,7 @@
 
             function ruleEngineLogic() {
 
-                
-                // var activeTab = activatedTab;
-                // activatedTab = $('.utteranceContainer__filterWrapper .ds-tab--isActive');
-                // if(activatedTab.length == 0){
-                //     activatedTab = buttonStash;
-                // }
-
                 setTimeout(function () {
-
-                    
-                    // $('.ds-checkbox__input').each(function(){
-                    //     $(this).css({
-                    //         "appearance":"checkbox"
-                    //     })
-                    //     $(this).on('mousedown click mouseup', function(e){
-                    //         $(this).attr('checked',true);
-                    //         e.stopPropagation();
-                    //         // e.stopImmediatePropagation();
-                    //         e.preventDefault();
-                    //         // console.log($(this).attr('checked'));
-                    //         document.selectedItems.push(this);
-                    //     });
-                    // })
 
                     $('.promptPanel__return .DS_iconButton, .intentPanel__return .DS_iconButton').addClass('fluidLayout__handles__left prompt');
 
@@ -547,43 +547,41 @@
                                     $(".showIntentDataCTA", this).click();
                                     $(".pinIntentCTA", this).click();
 
+                                    // var _c = getPath($(this));
+
                                     var _a = getPath($(".showIntentDataCTA", this));
                                     var _b = getPath($(".pinIntentCTA", this));
 
-                                    var that = this;
-
-                                    // var _a = Math.ceil(Math.random() * 100000); // $(".showIntentDataCTA", this);
-                                    // var _b = Math.ceil(Math.random() * 100000); // $(".pinIntentCTA", this);
-                                    // $(".showIntentDataCTA", this).attr('id', _a);
-                                    // $(".pinIntentCTA", this).attr('id', _b);
-
                                     var clonedFunction = function(){
 
-                                        $('.prompt').click();
+                                        //$('.prompt').click();
+                                        $('.promptPanel__return .DS_iconButton').click();
                                         
                                         setTimeout(function(){
                                             try{
+                                                cancelRefresh = true;
                                                 $(_a).click();
                                                 $(_b).click();
-                                                //eval('$(\'#' + _a +'\').click();');
-                                                //eval('$(\'#' + _b +'\').click();');
+                                                setTimeout(function(){
+                                                    cancelRefresh = false;
+                                                }, 100);
+                                                
 
-                                                // $('#' + _b).click();
                                             }catch(exception){
                                                 console.log(exception);
                                             }
-                                        },100)
+                                        },200)
                                     }
 
                                     setTimeout(function(){
                                         var promptName = $('.textInput__input').attr('value');
-                                        addNewPromptTab(promptName, clonedFunction);
+                                        if(promptName == ''){
+                                            try{
+                                                promptName = $('.genericPredicatePill__predicateValue', $('.utteranceContainer__filterWrapper .ds-tab--isActive')).text();
+                                            }catch(exception){}
+                                        }
+                                        addNewPromptTab(promptName, clonedFunction, true);
                                     },300);
-                                    
-                                    
-                                    // if(!$(buttonStash).hasClass('activated')){
-                                    //     buttonStash.click();
-                                    // }
 
                                 }
                                 else{
@@ -600,7 +598,6 @@
                     }catch(exception){}
 
                     
-                    
                     if (mainTab === 'Data') {
                         var tabContainer = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal";
                         $(tabContainer).show();
@@ -608,8 +605,10 @@
                         $(generated_data).hide();
                         $(labeled_data).show();
                         $(unlabeled_data).show();
-                        var dataFilter = $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.genericPredicatePill.explorePredicateImplicitIntentMatch__pill.explorePredicateImplicitIntentMatch__pill--notActive");
+
+                        var dataFilter = $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.genericPredicatePill");
                         dataFilter.removeClass("hidden");
+
                         $(buttonNewGen).hide();
 
                         $('.ds-tab.prompts').hide();
@@ -630,13 +629,11 @@
                     else {
 
                         var tabContainer = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal";
-                        // $(tabContainer).hide();
-
-                        //$(generated_data).hide();
+ 
                         $(generated_data).show();
                         $(labeled_data).hide();
                         $(unlabeled_data).hide();
-                        var dataFilter = $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.genericPredicatePill.explorePredicateImplicitIntentMatch__pill.explorePredicateImplicitIntentMatch__pill--notActive");
+                        var dataFilter = $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills > div.genericPredicatePill");
                         dataFilter.addClass("hidden");
 
                         $('.ds-tab.prompts').show();
@@ -651,10 +648,6 @@
 
                         $("#data_tab").hide();
 
-                        // setTimeout(function(){
-                        //     $("div.predicateWrapper__pills > div.buttonGroup.nlgFilter").wrap("<div id='prompt_tab' class='ds-tab ds-tab--isActive ds-tab--horizontal'></div>");
-                        // },100);
-
                         try{
                             $(".promptPanel__pinnedObjectPath").addClass('relocate');
                             $("#fluid-layout-overlay-portal-0 > div > div.promptPanel > div > div.promptPanel__return > h2").hide();
@@ -662,6 +655,13 @@
  
                         $(generated_data).click(function(){
                             $('.nlgFilter__clear').click();
+                            try{
+                                $('.DS_iconButton.prompt').click();
+                            }catch(exception){}
+                        });
+
+                        $(".promptPanel__return").click(function(){
+                            // $(generated_data).click();
                         });
 
                         $(generated_data).text('All prompts');
@@ -669,36 +669,20 @@
                         $(buttonApplyToPrompt).hide();
                         $(buttonSaveData).show();
                         $(buttonSelectData).show();
-                        
-                        // try{
-                        //     // put the generation run filter first
-                        //     var filterContainer = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters > div.predicateWrapper__pills";
-                        //     var genFilter = "div.buttonGroup.nlgFilter";    
-                        //     $(filterContainer)[0].insertBefore($(genFilter)[0], $(filterContainer)[0].firstChild);
-                        
-                        // }catch(exception){
-                        //     console.log(exception);
-                        // }
-
-                        try{
-                            // var filterContainer2 = "#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal > button.ds-tab.ds-tab--isActive.ds-tab--horizontal";
-                            // var genFilter2 = "div.buttonGroup.nlgFilter";
-                            // $(filterContainer2).append($(genFilter2));
-                            // $(filterContainer2).contents()[0].textContent=''
-            
-                            // $(filterContainer2).clone(true).appendTo("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.stack.stack--horizontal.stack--fullHeight.stack--fullWidth.stack--gapSmall > div.ds-tabs.ds-tabs--horizontal");
-                            //$(clone).attr('id', '#fluid-layout-overlay-portal-2')
-                            //$().append(clone);
-            
-                        }catch(exception){
-                            console.log(exception);
-                        }
                 
                     }
 
                     var lastTab = lastActivatedTab[mainTab];
                     var _status = status;
-                    if(lastTab){
+                    var currentTab = $('.utteranceContainer__filterWrapper .ds-tab--isActive');
+
+                    var sameParent = null;
+                    var _parent1 = $(lastTab).parent();
+                    var _parent2 = $(currentTab[0]).parent();
+                    sameParent = (_parent1[0] == _parent2[0]);
+
+                    if(lastTab && (lastTab != currentTab[0]) && !sameParent){
+                    //if(lastTab && !sameParent){
                         if(!(lastTab == buttonStash && $(buttonStash).hasClass('activated'))){
                             lastTab.click();
                             lastActivatedTab[mainTab] = null;
@@ -707,6 +691,7 @@
                             lastActivatedTab[mainTab] = null;
                         }
                     }
+
                     if(_status == "stash"){
                         if(!$(buttonStash).hasClass('activated')){
                             $(buttonStash).click();
