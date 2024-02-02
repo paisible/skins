@@ -211,9 +211,9 @@
                 
                 $('#fluid-layout-overlay-portal-0 > div > div.ds-tabs.ds-tabs--horizontal > button:nth-child(1)').click();
                 
-                // $(".runPrompt, .promptRunMode").each(function(){
-                //     $(this).addClass('active');
-                // });
+                $(".runPrompt, .promptRunMode").each(function(){
+                    $(this).addClass('active');
+                });
                 // $(this).addClass('hidden');
                 // $(buttonStash).click();
                 
@@ -338,7 +338,7 @@
             let num = valueElement.textContent;
 
             // Update the button text
-            $(buttonStash).text(`Stash (${num})`);
+            $(buttonStash).text(`Stash / Run (${num})`);
 
             var activatedTab = null;
             var lastActivatedTab = {
@@ -371,12 +371,23 @@
                 
                 
                 if(!cancelRefresh){
+                    console.log('refreshed');
+                    cancelRefresh = true;
                     // Do something when the innerHTML changes
                     setTimeout(function(){
+                        $(".objectColumn__create").remove();
                         ruleEngineLogic();
                     }, 150);
+
+                    setTimeout(function(){
+                        cancelRefresh = false;
+                    }, 350);
+                }
+                else{
+                    console.log("blocked refresh")
                 }
             };
+
 
             // Create a MutationObserver instance
             const observer3 = new MutationObserver(handleLeftPanelChange);
@@ -393,7 +404,7 @@
 
             
             var leftPanel = $("#fluid-layout-overlay-portal-0 > div");
-            observer3.observe(leftPanel[0], observerConfig);
+            // observer3.observe(leftPanel[0], observerConfig);
 
             var _data_tab = document.querySelector(data_tab);
             var left_panel = '#shouldBeInertIfModalIsOpen > div.page.page--fixedHeight > main > section > div > div > div > div:nth-child(1)'
@@ -458,9 +469,9 @@
 
                 // $(buttonNewGen).hide();
 
-                $(".runPrompt, .promptRunMode").each(function(){
-                    $(this).removeClass('active');
-                })
+                // $(".runPrompt, .promptRunMode").each(function(){
+                //     $(this).removeClass('active');
+                // })
 
             }
 
@@ -508,10 +519,61 @@
             stashListener();
 
             document.selectedItems = [];
+            mainStatus = null;
+            boundPrompts = false;
+            var pollInterval3;
 
             function ruleEngineLogic() {
 
-                setTimeout(function () {
+                var findElement = function(input){
+                    var element = input[0];
+                    var interval = input[1];
+                    if($(element).length > 0){
+                        var t = eval('interval' + interval);
+                        eval('clearInterval(' + t + ')');
+                        $(element).on('mouseup', function(){
+                            ruleEngineLogic();
+                        });
+                    }
+                }
+
+                try{
+                    clearInterval(interval1);
+                }catch(exception){}
+                var interval1 = setInterval(findElement, 200, ['#fluid-layout-overlay-portal-0 > div > div.ds-tabs.ds-tabs--horizontal', 1]);
+                try{
+                    clearInterval(interval2);
+                }catch(exception){}
+                //var interval2 = setInterval(findElement, 200, ['.virtualList__row', 2]);
+                try{
+                    clearInterval(interval3);
+                }catch(exception){}
+                var interval3 = setInterval(findElement, 200, ['#new_run', 3]);
+                try{
+                    clearInterval(interval4);
+                }catch(exception){}
+                var interval4 = setInterval(findElement, 200, ['.promptPanel__return', 4]);
+               
+                // var interval5 = setInterval(findElement, 200, '#fluid-layout-overlay-portal-0 > div > div.ds-tabs.ds-tabs--horizontal', interval5);
+
+
+                // $('#fluid-layout-overlay-portal-0 > div > div.ds-tabs.ds-tabs--horizontal').on('mouseup',function(){
+                //     applyRuleEngine();
+                // });
+                // $('.virtualList__row').on('mouseup',function(){
+                //     applyRuleEngine();
+                // });
+                // $('#new_run').on('mouseup',function(){
+                //     applyRuleEngine();
+                // });
+                // $('.promptPanel__return').on('mouseup',function(){
+                //     applyRuleEngine();
+                // });
+
+                //t = setInterval(foo, 1000, 'hello');
+
+                //setTimeout(function () {
+                    
 
                     $('.promptPanel__return .DS_iconButton, .intentPanel__return .DS_iconButton').addClass('fluidLayout__handles__left prompt');
 
@@ -526,76 +588,113 @@
                     // $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters.ds-tabs.ds-tabs--horizontal > div.predicateWrapper__pills > div.genericPredicatePill").hide();
 
                     try {
+                        $(run_cta).unbind('click');
                         document.querySelector(run_cta).addEventListener('click', function (event) {
                             // Call the rule engine when a click event is triggered within the main menu or its child elements
                             _generated_data.click();
-                        });
-                    } catch (exception) { }
-
-                    var mainTab = dataSelected.text()
-
-                    try{
-                        $(".hierarchicalIntent").each(function(index){
-                            $(this).unbind("click");
-
-                            $(this).click(function(){
-
-                                $(this).off('click');
-                               
-                                if (mainTab !== 'Data') {
-
-                                    $(".showIntentDataCTA", this).click();
-                                    $(".pinIntentCTA", this).click();
-
-                                    // var _c = getPath($(this));
-
-                                    var _a = getPath($(".showIntentDataCTA", this));
-                                    var _b = getPath($(".pinIntentCTA", this));
-
-                                    var clonedFunction = function(){
-
-                                        //$('.prompt').click();
-                                        $('.promptPanel__return .DS_iconButton').click();
-                                        
-                                        setTimeout(function(){
-                                            try{
-                                                cancelRefresh = true;
-                                                $(_a).click();
-                                                $(_b).click();
-                                                setTimeout(function(){
-                                                    cancelRefresh = false;
-                                                }, 100);
-                                                
-
-                                            }catch(exception){
-                                                console.log(exception);
-                                            }
-                                        },200)
-                                    }
-
-                                    setTimeout(function(){
-                                        var promptName = $('.textInput__input').attr('value');
-                                        if(promptName == ''){
-                                            try{
-                                                promptName = $('.genericPredicatePill__predicateValue', $('.utteranceContainer__filterWrapper .ds-tab--isActive')).text();
-                                            }catch(exception){}
-                                        }
-                                        addNewPromptTab(promptName, clonedFunction, true);
-                                    },300);
-
-                                }
-                                else{
-                                    if($(buttonStash).hasClass('activated')){
-                                        $(".pinIntentCTA", this).click();
-                                    }
-                                    else{
-                                        $(".showIntentDataCTA", this).click();
-                                    }
-                                    
-                                }
+                            setTimeout(function(){
+                                $("#fluid-layout-overlay-portal-1 > div > div > div > div.utteranceContainer__filterWrapper > div > div.filters.ds-tabs.ds-tabs--horizontal > div.predicateWrapper__pills > div.buttonGroup.nlgFilter.nlgFilter--active > button.DS_iconButton.nlgFilter__decrement").click();
                             });
                         });
-                    }catch(exception){}
+                    } catch (exception) {}
+
+                    var mainTab = dataSelected.text();
+
+                    //if(!boundPrompts){
+                    
+                    //var pollInterval4 = setInterval(function () {
+                        var targetElement = document.querySelector("#fluid-layout-overlay-portal-0 > div > div.stack.stack--vertical.stack--fullWidth.stack--gapMedium.objectColumn > div.objects__list > div.intentHierarchicalList > div > div > div");
+                        if (targetElement) {
+                            //var t = eval('pollInterval4');
+                            //eval('clearInterval(' + t + ')');
+                            //clearInterval(pollInterval4);
+
+                            try{
+                            
+                                $("#fluid-layout-overlay-portal-0 > div > div.stack.stack--vertical.stack--fullWidth.stack--gapMedium.objectColumn > div.objects__list > div.intentHierarchicalList > div > div > div").each(function(){
+                                $(".hierarchicalIntent").each(function(index){
+    
+                                    $(this).unbind("click");
+    
+                                    $(this).on('mouseup',function(){
+    
+                                        $(this).off('click');
+                                    
+                                        if (mainTab !== 'Data') {
+    
+                                            var _a = getPath($(".showIntentDataCTA", this));
+                                            var _b = getPath($(".pinIntentCTA", this));
+
+
+                                            $(".showIntentDataCTA", this).click();
+                                            $(".pinIntentCTA", this).click();
+    
+                                            // var _c = getPath($(this));
+
+    
+                                            var clonedFunction = function(){
+    
+                                                //$('.prompt').click();
+                                                $('.promptPanel__return .DS_iconButton').click();
+                                                
+                                                $(_a).click();
+                                                $(_b).click();
+                                                ruleEngineLogic();
+                                                // setTimeout(function(){
+                                                //     try{
+                                                //         //cancelRefresh = true;
+                                                //         $(_a).click();
+                                                //         setTimeout(function(){
+                                                //             //cancelRefresh = false;
+                                                //             $(_b).click();
+                                                //         }, 100);
+                                                        
+    
+                                                //     }catch(exception){
+                                                //         console.log(exception);
+                                                //     }
+                                                // }, 300)
+                                            }
+
+                                            var pollInterval2 = setInterval(function () {
+                                                
+                                                
+                                                var targetElement = document.querySelector(".promptNameField .textInput__input");
+                                                if (targetElement) {
+                                                    clearInterval(pollInterval2);
+                                                    //modifyElement();
+                                                    var promptName = $('.promptNameField .textInput__input').attr('value');
+                                                    if(promptName == ''){
+                                                        try{
+                                                            promptName = $('.genericPredicatePill__predicateValue', $('.utteranceContainer__filterWrapper .ds-tab--isActive')).text();
+                                                        }catch(exception){}
+                                                    }
+                                                    if(promptName == ''){
+                                                        promptName = 'empty'
+                                                    }
+                                                    addNewPromptTab(promptName, clonedFunction, true);
+                                                }
+                                            }, 100); // Poll every 500 milliseconds
+    
+                                        }
+                                        else{
+                                            if($(buttonStash).hasClass('activated')){
+                                                $(".pinIntentCTA", this).click();
+                                            }
+                                            else{
+                                                $(".showIntentDataCTA", this).click();
+                                            }
+                                            
+                                        }
+                                    });
+                                });
+                                boundPrompts = true;
+                            } catch(exception) {}
+                        //}
+                    //}, 0); // Poll every 500 milliseconds
+
+                        
+                    // }
 
                     
                     if (mainTab === 'Data') {
@@ -656,7 +755,7 @@
                         $(generated_data).click(function(){
                             $('.nlgFilter__clear').click();
                             try{
-                                $('.DS_iconButton.prompt').click();
+                                $('.promptPanel__return .DS_iconButton').click();
                             }catch(exception){}
                         });
 
@@ -677,12 +776,14 @@
                     var currentTab = $('.utteranceContainer__filterWrapper .ds-tab--isActive');
 
                     var sameParent = null;
-                    var _parent1 = $(lastTab).parent();
-                    var _parent2 = $(currentTab[0]).parent();
-                    sameParent = (_parent1[0] == _parent2[0]);
+                    //var _parent1 = $(lastTab).parent();
+                    //var _parent2 = $(currentTab[0]).parent();
+                    //sameParent = (_parent1[0] == _parent2[0]);
+                    var refocus = (mainStatus != mainTab)
 
-                    if(lastTab && (lastTab != currentTab[0]) && !sameParent){
+                    if(lastTab && (lastTab != currentTab[0]) && refocus){
                     //if(lastTab && !sameParent){
+                    //if(lastTab && (lastTab != currentTab[0])){
                         if(!(lastTab == buttonStash && $(buttonStash).hasClass('activated'))){
                             lastTab.click();
                             lastActivatedTab[mainTab] = null;
@@ -698,7 +799,9 @@
                         }
                     }
 
-                }, 100);
+                    mainStatus = mainTab;
+
+                //}, 1000);
 
             }
 

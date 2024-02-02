@@ -164,22 +164,25 @@
     padding-left:10px;
 }
 
-.promptRunMode{
+/* .promptRunMode{
     display:none;
-}
+} */
 
 .promptRunMode.active{
     display:block;
 }
 
-.runPrompt{
+/* .runPrompt{
     display:none;
-}
+} */
 
 .runPrompt.active{
     display:flex;
 }
 
+.objectColumn__create{
+    display:none;
+}
 
 .DS-button__tercery{
     border:1px solid #bac0de;
